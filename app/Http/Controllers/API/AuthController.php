@@ -6,10 +6,23 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
 
-class AuthController extends BaseController
+class AuthController extends BaseController implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('auth:api', except: ['register', 'login', 'showLogin']),
+        ];
+    }
+
+    public function showLogin()
+    {
+        return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
+    }
 
     public function register(Request $request): JsonResponse
     {
@@ -49,7 +62,7 @@ class AuthController extends BaseController
     {
         $success = auth()->user();
 
-        return $this->sendResponse($success, 'Refresh token return successfully.');
+        return $this->sendResponse($success);
     }
 
     public function logout(): JsonResponse
