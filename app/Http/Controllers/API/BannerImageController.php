@@ -20,7 +20,7 @@ class BannerImageController extends BaseController implements HasMiddleware
     }
     public function index()
     {
-        $bannerImages = BannerImage::all();
+        $bannerImages = BannerImage::orderBy('sort', 'ASC')->get();
 
         return $this->sendResponse($bannerImages);
     }
