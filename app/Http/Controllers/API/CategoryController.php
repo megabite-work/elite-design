@@ -13,7 +13,7 @@ class CategoryController extends BaseController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:api'),
+            new Middleware('auth:api', except: ['index']),
         ];
     }
 
