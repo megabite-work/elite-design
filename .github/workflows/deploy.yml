@@ -1,0 +1,22 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy api.demo-avtozapchasti.uz
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd projects/private/dynamic/api.demo-avtozapchasti.uz/project
+            git reset --hard
+            git pull
+            cd ../
+            make php_refresh
