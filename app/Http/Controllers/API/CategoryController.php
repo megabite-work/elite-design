@@ -13,7 +13,7 @@ class CategoryController extends BaseController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:api', except: ['index']),
+            new Middleware('auth:api', except: ['index', 'show']),
         ];
     }
 
@@ -77,11 +77,11 @@ class CategoryController extends BaseController implements HasMiddleware
             'name' => ['bail', 'nullable', 'string', "unique:categories,name,exists,$category->id"],
             'sort' => ['bail', 'nullable', 'integer'],
         ]);
-        
+
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-        
+
         $category->update($request->all());
 
         return $this->sendResponse($category, "Category successfully updated");

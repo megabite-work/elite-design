@@ -15,7 +15,7 @@ class BannerImageController extends BaseController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:api', except: ['index']),
+            new Middleware('auth:api', except: ['index', 'show']),
         ];
     }
     public function index()
