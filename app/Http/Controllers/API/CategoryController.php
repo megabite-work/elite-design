@@ -19,7 +19,7 @@ class CategoryController extends BaseController implements HasMiddleware
 
     public function index()
     {
-        $categories = Category::orderBy('sort', 'ASC')->get();
+        $categories = Category::with('bannerImages')->orderBy('sort', 'ASC')->get();
 
         return $this->sendResponse($categories);
     }
@@ -57,7 +57,7 @@ class CategoryController extends BaseController implements HasMiddleware
 
     public function show(int $id)
     {
-        $category = Category::find($id);
+        $category = Category::with('bannerImages')->find($id);
 
         if (!$category) {
             return $this->sendError('Not Found', ['error' => 'Not Found']);

@@ -13,7 +13,7 @@ class Category extends Model
 
     protected $guarded = [];
 
-    public function category(): HasMany
+    public function bannerImages(): HasMany
     {
         return $this->hasMany(BannerImage::class, "category_id", "id");
     }
