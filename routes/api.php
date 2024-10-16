@@ -3,6 +3,8 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\BannerImageController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ProjectController;
+use App\Http\Controllers\API\WebSettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth'], function () {
@@ -21,5 +23,7 @@ Route::group([], function () {
 
 Route::apiResources([
     'categories' => CategoryController::class,
+    'projects' => ProjectController::class,
+    'web-settings' => WebSettingController::class,
     'banner-images' => BannerImageController::class,
 ]);
