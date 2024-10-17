@@ -41,14 +41,14 @@ class CategoryController extends BaseController implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'name' => ['bail', 'required', 'string', 'unique:categories,name'],
-            'sort' => ['bail', 'required', 'integer'],
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = $request->only(['name', 'sort']);
+        $data = $request->only(['name']);
+        $data['sort'] = (Category::latest()->first()->id ?? 0) + 1;
 
         $category = Category::create($data);
 
@@ -75,14 +75,13 @@ class CategoryController extends BaseController implements HasMiddleware
 
         $validator = Validator::make($request->all(), [
             'name' => ['bail', 'nullable', 'string', "unique:categories,name,exists,$category->id"],
-            'sort' => ['bail', 'nullable', 'integer'],
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = array_filter($request->only(['name', 'sort']));
+        $data = array_filter($request->only(['name']));
 
         $category->update($data);
 
