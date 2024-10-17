@@ -403,16 +403,6 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "name",
-									"value": "2-banner image",
-									"type": "text"
-								},
-								{
-									"key": "sort",
-									"value": "2",
-									"type": "text"
-								},
-								{
 									"key": "category_id",
 									"value": "1",
 									"type": "text"
@@ -421,6 +411,18 @@
 									"key": "image",
 									"type": "file",
 									"src": "/C:/Users/user/Pictures/123.jpg"
+								},
+								{
+									"key": "alt[ru]",
+									"value": "alt ru",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt[en]",
+									"value": "alt en",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -469,14 +471,31 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "sort",
+									"key": "_method",
+									"value": "PATCH",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
 									"value": "2",
 									"type": "text"
 								},
 								{
-									"key": "_method",
-									"value": "PATCH",
-									"type": "text"
+									"key": "image",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "alt[ru]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt[en]",
+									"value": "",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -598,14 +617,10 @@
 									"type": "text"
 								},
 								{
-									"key": "sort",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "alt",
-									"value": "alt",
-									"type": "text"
+									"key": "alt[ru]",
+									"value": "alt_ru",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "image",
@@ -616,6 +631,12 @@
 									"key": "description",
 									"value": "Description",
 									"type": "text"
+								},
+								{
+									"key": "alt[en]",
+									"value": "alt_en",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -646,49 +667,49 @@
 							"mode": "formdata",
 							"formdata": [
 								{
+									"key": "_method",
+									"value": "PATCH",
+									"type": "text"
+								},
+								{
 									"key": "title",
 									"value": "Title 2",
 									"type": "text",
 									"disabled": true
 								},
 								{
-									"key": "sort",
-									"value": "2",
+									"key": "alt[ru]",
+									"value": "alt_update",
 									"type": "text",
 									"disabled": true
 								},
 								{
-									"key": "alt",
-									"value": "alt",
-									"type": "text",
-									"disabled": true
+									"key": "alt[en]",
+									"value": "alt_en",
+									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/user/Pictures/600x800.webp"
+									"src": "/C:/Users/user/Pictures/600x800.webp",
+									"disabled": true
 								},
 								{
 									"key": "description",
 									"value": "Description",
 									"type": "text",
 									"disabled": true
-								},
-								{
-									"key": "_method",
-									"value": "PATCH",
-									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/about-images/1",
+							"raw": "{{url}}/about-images/5",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"about-images",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -803,6 +824,30 @@
 										"/C:/Users/home/Pictures/images/crm_row_img4.png",
 										"/C:/Users/home/Pictures/images/change-password.png"
 									]
+								},
+								{
+									"key": "alt[0][ru]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt[0][en]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt[1][ru]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt[1][en]",
+									"value": "",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -851,14 +896,33 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "images[0]",
-									"type": "file",
-									"src": "/C:/Users/home/Pictures/images/biography1.png"
-								},
-								{
 									"key": "_method",
 									"value": "PATCH",
 									"type": "text"
+								},
+								{
+									"key": "images[0]",
+									"type": "file",
+									"src": "/C:/Users/home/Pictures/images/biography1.png",
+									"disabled": true
+								},
+								{
+									"key": "about",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt[0][ru]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt[1][en]",
+									"value": "",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -975,25 +1039,53 @@
 									"key": "files[]",
 									"type": "file",
 									"src": [
-										"/C:/Users/home/Pictures/images/biography1.png",
-										"/C:/Users/home/Pictures/images/biography2.png"
+										"/C:/Users/user/Pictures/66e524f0deb82 (1).png",
+										"/C:/Users/user/Pictures/66e524f0deb82.png"
 									]
+								},
+								{
+									"key": "file_alt[0][en]",
+									"value": "en_0",
+									"type": "text"
+								},
+								{
+									"key": "file_alt[1][ru]",
+									"value": "ru_1",
+									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/home/Pictures/images/card_item_img.png"
+									"src": "/C:/Users/user/Pictures/66e524f0deb82.png"
+								},
+								{
+									"key": "alt[ru]",
+									"value": "alt_ru",
+									"type": "text"
+								},
+								{
+									"key": "alt[en]",
+									"value": "alt_en",
+									"type": "text"
 								},
 								{
 									"key": "pictures[]",
 									"type": "file",
 									"src": [
-										"/C:/Users/home/Pictures/images/change-password.png",
-										"/C:/Users/home/Pictures/images/credit-card.png",
-										"/C:/Users/home/Pictures/images/crm_row_img2.png",
-										"/C:/Users/home/Pictures/images/crm_row_img3.png",
-										"/C:/Users/home/Pictures/images/crm_row_img4.png"
+										"/C:/Users/user/Pictures/66e524f0deb82 (1).png",
+										"/C:/Users/user/Pictures/66e524f0deb82.png",
+										"/C:/Users/user/Pictures/123.jpg"
 									]
+								},
+								{
+									"key": "picture_alt[0][en]",
+									"value": "pic_en_0",
+									"type": "text"
+								},
+								{
+									"key": "picture_alt[0][ru]",
+									"value": "pic_ru_0",
+									"type": "text"
 								},
 								{
 									"key": "characteristics",
@@ -1009,13 +1101,21 @@
 									"key": "plan_photos[]",
 									"type": "file",
 									"src": [
-										"/C:/Users/home/Pictures/images/card_title_bg.png",
-										"/C:/Users/home/Pictures/images/change-password.png",
-										"/C:/Users/home/Pictures/images/credit-card.png",
-										"/C:/Users/home/Pictures/images/crm_row_img2.png",
-										"/C:/Users/home/Pictures/images/crm_row_img3.png",
-										"/C:/Users/home/Pictures/images/crm_row_img4.png"
+										"/C:/Users/user/Pictures/66e524f0deb82 (1).png",
+										"/C:/Users/user/Pictures/66e524f0deb82.png"
 									]
+								},
+								{
+									"key": "plan_photo_alt[0][ru]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "plan_photo_alt[0][en]",
+									"value": "",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "video",
@@ -1066,44 +1166,70 @@
 							"mode": "formdata",
 							"formdata": [
 								{
+									"key": "_method",
+									"value": "PATCH",
+									"type": "text"
+								},
+								{
 									"key": "title",
-									"value": "Title",
-									"type": "text",
-									"disabled": true
+									"value": "Title 2",
+									"type": "text"
 								},
 								{
 									"key": "short_description",
-									"value": "Short_description",
-									"type": "text",
-									"disabled": true
+									"value": "Short_description 2",
+									"type": "text"
 								},
 								{
 									"key": "city",
-									"value": "City",
-									"type": "text",
-									"disabled": true
+									"value": "City 2",
+									"type": "text"
 								},
 								{
 									"key": "year",
-									"value": "2024",
-									"type": "text",
-									"disabled": true
+									"value": "2025",
+									"type": "text"
 								},
 								{
 									"key": "description",
-									"value": "Description",
-									"type": "text",
-									"disabled": true
+									"value": "Description 2",
+									"type": "text"
 								},
 								{
 									"key": "files[]",
 									"type": "file",
-									"src": "/C:/Users/home/Pictures/images/ai_img.png"
+									"src": [
+										"/C:/Users/home/Pictures/images/biography1.png",
+										"/C:/Users/home/Pictures/images/biography2.png"
+									],
+									"disabled": true
+								},
+								{
+									"key": "file_alt[0][en]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "file_alt[0][ru]",
+									"value": "2",
+									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
 									"src": "/C:/Users/home/Pictures/images/card_item_img.png",
+									"disabled": true
+								},
+								{
+									"key": "alt[ru]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt[en]",
+									"value": "",
+									"type": "text",
 									"disabled": true
 								},
 								{
@@ -1116,6 +1242,18 @@
 										"/C:/Users/home/Pictures/images/crm_row_img3.png",
 										"/C:/Users/home/Pictures/images/crm_row_img4.png"
 									],
+									"disabled": true
+								},
+								{
+									"key": "picture_alt[0][en]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "picture_alt[0][ru]",
+									"value": "",
+									"type": "text",
 									"disabled": true
 								},
 								{
@@ -1144,6 +1282,16 @@
 									"disabled": true
 								},
 								{
+									"key": "plan_photo_alt[0][ru]",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "plan_photo_alt[0][en]",
+									"value": "0",
+									"type": "text"
+								},
+								{
 									"key": "video",
 									"value": "https://youtube.com",
 									"type": "text",
@@ -1168,8 +1316,13 @@
 									"disabled": true
 								},
 								{
-									"key": "_method",
-									"value": "PATCH",
+									"key": "plan_photo_alt[1][ru]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "plan_photo_alt[1][en]",
+									"value": "1",
 									"type": "text"
 								}
 							]
@@ -1243,7 +1396,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0Ojk5OS9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTcyOTE0MjAzNywiZXhwIjoxNzI5MTQ1NjM3LCJuYmYiOjE3MjkxNDIwMzcsImp0aSI6Ilp6WWF1Z0I2YkdjMHFRTVciLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.nfVNlhvpOiNXswYAaQKUkExxzqfhdjNuk8xtpkj9uGw",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0Ojk5OS9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTcyOTE1ODU3MCwiZXhwIjoxNzI5MTYyMTcwLCJuYmYiOjE3MjkxNTg1NzAsImp0aSI6Im1YUWRiMWlqM3JWNEJ3YmIiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.tGkH_RO39_kinGEh2kaxTHlA87dgOkg7JK5U7oZfeyE",
 				"type": "string"
 			}
 		]
