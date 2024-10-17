@@ -472,23 +472,22 @@
 									"key": "sort",
 									"value": "2",
 									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "PATCH",
+									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/banner-images/1?_method=PATCH",
+							"raw": "{{url}}/banner-images/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"banner-images",
 								"1"
-							],
-							"query": [
-								{
-									"key": "_method",
-									"value": "PATCH"
-								}
 							]
 						}
 					},
@@ -512,6 +511,231 @@
 							],
 							"path": [
 								"banner-images",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "About Image",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/about-images",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"about-images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sort",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"items\": [\r\n        {\r\n            \"id\": 1,\r\n            \"sort\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/about-images/sort",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"about-images",
+								"sort"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Title",
+									"type": "text"
+								},
+								{
+									"key": "sort",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "alt",
+									"value": "alt",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/user/Pictures/123.jpg"
+								},
+								{
+									"key": "description",
+									"value": "Description",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/about-images",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"about-images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Title 2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt",
+									"value": "alt",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/user/Pictures/600x800.webp"
+								},
+								{
+									"key": "description",
+									"value": "Description",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "_method",
+									"value": "PATCH",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/about-images/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"about-images",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/about-images/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"about-images",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/about-images/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"about-images",
 								"1"
 							]
 						}
@@ -1019,7 +1243,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXBpLWVsaXRlLWRlc2lnbi50ZXN0L2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNzI5MDg0MTc3LCJleHAiOjE3MjkwODc3NzcsIm5iZiI6MTcyOTA4NDE3NywianRpIjoiU3o3THY1dmtzWDJqVTRNNiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.w8zfT5LBEWJTI2AQl8KY-9fevojZTYziXZRV61JO7PM",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0Ojk5OS9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTcyOTE0MjAzNywiZXhwIjoxNzI5MTQ1NjM3LCJuYmYiOjE3MjkxNDIwMzcsImp0aSI6Ilp6WWF1Z0I2YkdjMHFRTVciLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.nfVNlhvpOiNXswYAaQKUkExxzqfhdjNuk8xtpkj9uGw",
 				"type": "string"
 			}
 		]
