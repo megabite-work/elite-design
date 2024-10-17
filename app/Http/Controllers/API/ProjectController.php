@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Helper\MediaObject;
 use App\Http\Controllers\API\BaseController;
 use App\Models\Project;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -19,7 +20,7 @@ class ProjectController extends BaseController implements HasMiddleware
             new Middleware('auth:api'),
         ];
     }
-    public function index()
+    public function index(): JsonResponse
     {
         $projects = Project::get();
 
@@ -36,13 +37,24 @@ class ProjectController extends BaseController implements HasMiddleware
             'description' => ['bail', 'required', 'string'],
             'files' => ['bail', 'required', 'array'],
             'files.*' => ['bail', 'required', 'file', 'max:10240'],
+            'file_alt' => ['bail', 'nullable', 'array'],
+            'file_alt.*' => ['bail', 'nullable', 'array', 'max:2'],
+            'file_alt.*.*' => ['bail', 'nullable', 'string', 'max:255'],
             'image' => ['bail', 'required', 'image', 'max:10240'],
+            'alt' => ['bail', 'nullable', 'array', 'max:2'],
+            'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
             'pictures' => ['bail', 'required', 'array'],
             'pictures.*' => ['bail', 'required', 'image', 'max:10240'],
+            'picture_alt' => ['bail', 'nullable', 'array'],
+            'picture_alt.*' => ['bail', 'nullable', 'array', 'max:2'],
+            'picture_alt.*.*' => ['bail', 'nullable', 'string', 'max:255'],
             'characteristics' => ['bail', 'required', 'string'],
             'plans' => ['bail', 'required', 'string'],
             'plan_photos' => ['bail', 'required', 'array'],
             'plan_photos.*' => ['bail', 'required', 'image', 'max:10240'],
+            'plan_photo_alt' => ['bail', 'nullable', 'array'],
+            'plan_photo_alt.*' => ['bail', 'nullable', 'array', 'max:2'],
+            'plan_photo_alt.*.*' => ['bail', 'nullable', 'string', 'max:255'],
             'video' => ['bail', 'required', 'string'],
             'address' => ['bail', 'required', 'string'],
             'longitude' => ['bail', 'required', 'string'],
@@ -53,26 +65,30 @@ class ProjectController extends BaseController implements HasMiddleware
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = $request->only(['title', 'short_description', 'city', 'year', 'description', 'files', 'image', 'pictures', 'characteristics', 'plans', 'plan_photos', 'video', 'address', 'longitude', 'latitude']);
+        $data = $request->only(['title', 'short_description', 'city', 'year', 'description', 'file_alt', 'alt', 'picture_alt', 'characteristics', 'plans', 'plan_photo_alt', 'video', 'address', 'longitude', 'latitude']);
 
-        foreach ($data['files'] as $key => $file) {
-            $data['files'][$key] = MediaObject::upload($file, 'files');
+        foreach ($request->file('files') as $key => $file) {
+            $data['files'][$key]['file'] = MediaObject::upload($file, 'files');
+            $data['files'][$key]['alt'] = !empty($data['file_alt'][$key]) ? $data['file_alt'][$key] : null;
         }
         ksort($data['files']);
 
-        foreach ($request->pictures as $key => $picture) {
-            $data['pictures'][$key] = MediaObject::upload($picture);
+        foreach ($request->file('pictures') as $key => $picture) {
+            $data['pictures'][$key]['picture'] = MediaObject::upload($picture);
+            $data['pictures'][$key]['alt'] = !empty($data['picture_alt'][$key]) ? $data['picture_alt'][$key] : null;
         }
         ksort($data['pictures']);
 
-        foreach ($request->plan_photos as $key => $plan_photo) {
-            $data['plan_photos'][$key] = MediaObject::upload($plan_photo);
+        foreach ($request->file('plan_photos') as $key => $plan_photo) {
+            $data['plan_photos'][$key]['plan_photo'] = MediaObject::upload($plan_photo);
+            $data['plan_photos'][$key]['alt'] = !empty($data['plan_photo_alt'][$key]) ? $data['plan_photo_alt'][$key] : null;
         }
         ksort($data['plan_photos']);
 
-        if (!empty($data['image'])) {
-            $data['image'] = MediaObject::upload($data['image']);
+        if (!empty($request->file('image'))) {
+            $data['image'] = MediaObject::upload($request->file('image'));
         }
+        unset($data['file_alt'], $data['picture_alt'], $data['plan_photo_alt']);
 
         $project = Project::create($data);
 
@@ -106,13 +122,24 @@ class ProjectController extends BaseController implements HasMiddleware
             'description' => ['bail', 'nullable', 'string'],
             'files' => ['bail', 'nullable', 'array'],
             'files.*' => ['bail', 'nullable', 'file', 'max:10240'],
+            'file_alt' => ['bail', 'nullable', 'array'],
+            'file_alt.*' => ['bail', 'nullable', 'array', 'max:2'],
+            'file_alt.*.*' => ['bail', 'nullable', 'string', 'max:255'],
             'image' => ['bail', 'nullable', 'image', 'max:10240'],
+            'alt' => ['bail', 'nullable', 'array', 'max:2'],
+            'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
             'pictures' => ['bail', 'nullable', 'array'],
             'pictures.*' => ['bail', 'nullable', 'image', 'max:10240'],
+            'picture_alt' => ['bail', 'nullable', 'array'],
+            'picture_alt.*' => ['bail', 'nullable', 'array', 'max:2'],
+            'picture_alt.*.*' => ['bail', 'nullable', 'string', 'max:255'],
             'characteristics' => ['bail', 'nullable', 'string'],
             'plans' => ['bail', 'nullable', 'string'],
             'plan_photos' => ['bail', 'nullable', 'array'],
             'plan_photos.*' => ['bail', 'nullable', 'image', 'max:10240'],
+            'plan_photo_alt' => ['bail', 'nullable', 'array'],
+            'plan_photo_alt.*' => ['bail', 'nullable', 'array', 'max:2'],
+            'plan_photo_alt.*.*' => ['bail', 'nullable', 'string', 'max:255'],
             'video' => ['bail', 'nullable', 'string'],
             'address' => ['bail', 'nullable', 'string'],
             'longitude' => ['bail', 'nullable', 'string'],
@@ -123,56 +150,55 @@ class ProjectController extends BaseController implements HasMiddleware
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = array_filter($request->only(['title', 'short_description', 'city', 'year', 'description', 'files', 'image', 'pictures', 'characteristics', 'plans', 'plan_photos', 'video', 'address', 'longitude', 'latitude']));
+        $data = array_filter($request->only(['title', 'short_description', 'city', 'year', 'description', 'file_alt', 'alt', 'picture_alt', 'characteristics', 'plans', 'plan_photo_alt', 'video', 'address', 'longitude', 'latitude']));
         $deleted_files = [];
-
-        if (!empty($data['files'])) {
-            $files = $project->files ?? [];
-            foreach ($files as $key => $file) {
-                if (empty($data['files'][$key])) {
-                    $data['files'][$key] = $file;
-                } else {
-                    if (Storage::disk('public')->exists($file)) $deleted_files[] = $file;
-
-                    $data['files'][$key] = MediaObject::upload($data['files'][$key], 'files');
-                }
+        foreach ($project->files as $key => $file) {
+            if (!empty($request->file('files')[$key])) {
+                $data['files'][$key]['file'] = MediaObject::upload($request->file('files')[$key], 'files');
+                if (Storage::disk('public')->exists($file->file)) $deleted_files[] = $file->file;
+            } else {
+                $data['files'][$key]['file'] = $file->file;
             }
-            ksort($data['files']);
+            $data['files'][$key]['alt']['en'] = (!empty($data['file_alt'][$key]) && !empty($data['file_alt'][$key]['en'])) ? $data['file_alt'][$key]['en'] : (!empty($file->alt->en) ? $file->alt->en : "");
+            $data['files'][$key]['alt']['ru'] = (!empty($data['file_alt'][$key]) && !empty($data['file_alt'][$key]['ru'])) ? $data['file_alt'][$key]['ru'] : (!empty($file->alt->ru) ? $file->alt->ru : "");
         }
+        ksort($data['files']);
 
-        if (!empty($data['pictures'])) {
-            $pictures = $project->pictures ?? [];
-            foreach ($pictures as $key => $picture) {
-                if (empty($data['pictures'][$key])) {
-                    $data['pictures'][$key] = $picture;
-                } else {
-                    if (Storage::disk('public')->exists($picture)) $deleted_files[] = $picture;
-
-                    $data['pictures'][$key] = MediaObject::upload($data['pictures'][$key]);
-                }
+        foreach ($project->pictures as $key => $picture) {
+            if (!empty($request->file('pictures')[$key])) {
+                $data['pictures'][$key]['picture'] = MediaObject::upload($request->file('pictures')[$key]);
+                if (Storage::disk('public')->exists($picture->picture)) $deleted_files[] = $picture->picture;
+            } else {
+                $data['pictures'][$key]['picture'] = $picture->picture;
             }
-            ksort($data['pictures']);
+
+            $data['pictures'][$key]['alt']['en'] = !empty($data['picture_alt'][$key]['en']) ? $data['picture_alt'][$key]['en'] : $picture->alt->en ?? "";
+            $data['pictures'][$key]['alt']['ru'] = !empty($data['picture_alt'][$key]['ru']) ? $data['picture_alt'][$key]['ru'] : $picture->alt->ru ?? "";
         }
+        ksort($data['pictures']);
 
-        if (!empty($data['plan_photos'])) {
-            $plan_photos = $project->plan_photos ?? [];
-            foreach ($plan_photos as $key => $plan_photo) {
-                if (empty($data['plan_photos'][$key])) {
-                    $data['plan_photos'][$key] = $plan_photo;
-                } else {
-                    if (Storage::disk('public')->exists($plan_photo)) $deleted_files[] = $plan_photo;
-
-                    $data['plan_photos'][$key] = MediaObject::upload($data['plan_photos'][$key]);
-                }
+        foreach ($project->plan_photos as $key => $plan_photo) {
+            if (!empty($request->file('plan_photos')[$key])) {
+                $data['plan_photos'][$key]['plan_photo'] = MediaObject::upload($request->file('plan_photos')[$key]);
+                if (Storage::disk('public')->exists($plan_photo->plan_photo)) $deleted_files[] = $plan_photo->plan_photo;
+            } else {
+                $data['plan_photos'][$key]['plan_photo'] = $plan_photo->plan_photo;
             }
-            ksort($data['plan_photos']);
-        }
 
-        if (!empty($data['image'])) {
-            $image = $project->image ?? null;
-            if (Storage::disk('public')->exists($image)) $deleted_files[] = $image;
-            $data['image'] = MediaObject::upload($data['image']);
+            $data['plan_photos'][$key]['alt']['en'] = !empty($data['plan_photo_alt'][$key]['en']) ? $data['plan_photo_alt'][$key]['en'] : $plan_photo->alt->en ?? "";
+            $data['plan_photos'][$key]['alt']['ru'] = !empty($data['plan_photo_alt'][$key]['ru']) ? $data['plan_photo_alt'][$key]['ru'] : $plan_photo->alt->ru ?? "";
         }
+        ksort($data['plan_photos']);
+
+        if (!empty($request->file('image'))) {
+            $data['image'] = MediaObject::upload($request->file('image'));
+            if (Storage::disk('public')->exists($project->image)) $deleted_files[] = $project->image;
+        }
+        if (!empty($data['alt'])) {
+            $data['alt']['ru'] = !empty($data['alt']['ru']) ? $data['alt']['ru'] : $project->alt->ru ?? "";
+            $data['alt']['en'] = !empty($data['alt']['en']) ? $data['alt']['en'] : $project->alt->en ?? "";
+        }
+        unset($data['file_alt'], $data['picture_alt'], $data['plan_photo_alt']);
 
         $project->update($data);
 
@@ -189,7 +215,23 @@ class ProjectController extends BaseController implements HasMiddleware
             return $this->sendError('Not Found', ['error' => 'Not Found']);
         }
 
+        $deleted_files = [];
+
+        foreach ($project->files as $file) {
+            if (Storage::disk('public')->exists($file->file)) $deleted_files[] = $file->file;
+        }
+        foreach ($project->pictures as $picture) {
+            if (Storage::disk('public')->exists($picture->picture)) $deleted_files[] = $picture->picture;
+        }
+        foreach ($project->plan_photos as $plan_photo) {
+            if (Storage::disk('public')->exists($plan_photo->plan_photo)) $deleted_files[] = $plan_photo->plan_photo;
+        }
+
+        if (Storage::disk('public')->exists($project->image)) $deleted_files[] = $project->image;
+
+
         $project->delete();
+        Storage::disk('public')->delete($deleted_files);
 
         return $this->sendResponse([], "Project successfully deleted");
     }

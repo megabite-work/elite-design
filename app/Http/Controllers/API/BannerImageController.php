@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Helper\MediaObject;
 use App\Models\BannerImage;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -18,14 +19,14 @@ class BannerImageController extends BaseController implements HasMiddleware
             new Middleware('auth:api', except: ['index', 'show']),
         ];
     }
-    public function index()
+    public function index(): JsonResponse
     {
         $bannerImages = BannerImage::orderBy('sort', 'ASC')->get();
 
         return $this->sendResponse($bannerImages);
     }
 
-    public function sort(Request $request)
+    public function sort(Request $request): JsonResponse
     {
         $items = $request->items;
 
@@ -38,12 +39,12 @@ class BannerImageController extends BaseController implements HasMiddleware
         return $this->sendResponse([], "Banner Image successfully sorted");
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'category_id' => ['bail', 'required', 'integer', 'exists:categories,id'],
-            'name' => ['bail', 'required', 'string', 'max:255'],
-            'sort' => ['bail', 'required', 'integer'],
+            'alt' => ['bail', 'nullable', 'array', 'max:2'],
+            'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
             'image' => ['bail', 'required', 'image', 'max:10240'],
         ]);
 
@@ -51,15 +52,16 @@ class BannerImageController extends BaseController implements HasMiddleware
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = $request->only(['category_id', 'name', 'sort', 'image']);
-        $data['image'] = MediaObject::upload($data['image']);
+        $data = $request->only(['category_id', 'alt']);
+        $data['image'] = MediaObject::upload($request->file('image'));
+        $data['sort'] = (BannerImage::latest()->first()->id ?? 0) + 1;
 
         $bannerImage = BannerImage::create($data);
 
         return $this->sendResponse($bannerImage, "Banner Image successfully created");
     }
 
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
         $bannerImage = BannerImage::find($id);
 
@@ -70,7 +72,7 @@ class BannerImageController extends BaseController implements HasMiddleware
         return $this->sendResponse($bannerImage);
     }
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         $bannerImage = BannerImage::find($id);
 
@@ -80,8 +82,8 @@ class BannerImageController extends BaseController implements HasMiddleware
 
         $validator = Validator::make($request->all(), [
             'category_id' => ['bail', 'nullable', 'integer', 'exists:categories,id'],
-            'name' => ['bail', 'nullable', 'string', 'max:255'],
-            'sort' => ['bail', 'nullable', 'integer'],
+            'alt' => ['bail', 'nullable', 'array', 'max:2'],
+            'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
             'image' => ['bail', 'nullable', 'image', 'max:10240'],
         ]);
 
@@ -89,11 +91,15 @@ class BannerImageController extends BaseController implements HasMiddleware
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = array_filter($request->only(['category_id', 'name', 'sort', 'image']));
+        $data = array_filter($request->only(['category_id', 'alt']));
         $oldImage = null;
         if ($request->hasFile('image')) {
-            $data['image'] = MediaObject::upload($data['image']);
+            $data['image'] = MediaObject::upload($request->file('image'));
             $oldImage = $bannerImage->image;
+        }
+        if (!empty($data['alt'])) {
+            $data['alt']['ru'] = !empty($data['alt']['ru']) ? $data['alt']['ru'] : $bannerImage->alt->ru ?? "";
+            $data['alt']['en'] = !empty($data['alt']['en']) ? $data['alt']['en'] : $bannerImage->alt->en ?? "";
         }
 
         $bannerImage->update($data);
@@ -110,6 +116,8 @@ class BannerImageController extends BaseController implements HasMiddleware
         if (!$bannerImage) {
             return $this->sendError('Not Found', ['error' => 'Not Found']);
         }
+
+        if (Storage::disk('public')->exists($bannerImage->image)) Storage::disk('public')->delete($bannerImage->image);
 
         $bannerImage->delete();
 

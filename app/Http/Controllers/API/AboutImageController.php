@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Helper\MediaObject;
 use App\Models\AboutImage;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -18,14 +19,15 @@ class AboutImageController extends BaseController implements HasMiddleware
             new Middleware('auth:api', except: ['index', 'show']),
         ];
     }
-    public function index()
+
+    public function index(): JsonResponse
     {
         $aboutImages = AboutImage::orderBy('sort', 'ASC')->get();
 
         return $this->sendResponse($aboutImages);
     }
 
-    public function sort(Request $request)
+    public function sort(Request $request): JsonResponse
     {
         $items = $request->items;
 
@@ -38,29 +40,30 @@ class AboutImageController extends BaseController implements HasMiddleware
         return $this->sendResponse([], "About Image successfully sorted");
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'title' => ['bail', 'required', 'string', 'max:255'],
             'image' => ['bail', 'required', 'image', 'max:10240'],
-            'alt' => ['bail', 'required', 'string', 'max:255'],
+            'alt' => ['bail', 'nullable', 'array', 'max:2'],
+            'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
             'description' => ['bail', 'required', 'string'],
-            'sort' => ['bail', 'required', 'integer'],
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = $request->only(['title', 'alt', 'sort', 'image', 'description']);
-        $data['image'] = MediaObject::upload($data['image']);
+        $data = $request->only(['title', 'alt', 'description']);
+        $data['image'] = MediaObject::upload($request->file('image'));
+        $data['sort'] = (AboutImage::latest()->first()->id ?? 0) + 1;
 
         $aboutImage = AboutImage::create($data);
 
         return $this->sendResponse($aboutImage, "About Image successfully created");
     }
 
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
         $aboutImage = AboutImage::find($id);
 
@@ -71,7 +74,7 @@ class AboutImageController extends BaseController implements HasMiddleware
         return $this->sendResponse($aboutImage);
     }
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         $aboutImage = AboutImage::find($id);
 
@@ -82,36 +85,42 @@ class AboutImageController extends BaseController implements HasMiddleware
         $validator = Validator::make($request->all(), [
             'title' => ['bail', 'nullable', 'string', 'max:255'],
             'image' => ['bail', 'nullable', 'image', 'max:10240'],
-            'alt' => ['bail', 'nullable', 'string', 'max:255'],
+            'alt' => ['bail', 'nullable', 'array', 'max:2'],
+            'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
             'description' => ['bail', 'nullable', 'string'],
-            'sort' => ['bail', 'nullable', 'integer'],
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = array_filter($request->only(['title', 'alt', 'sort', 'image', 'description']));
+        $data = array_filter($request->only(['title', 'alt', 'description']));
         $oldImage = null;
         if ($request->hasFile('image')) {
-            $data['image'] = MediaObject::upload($data['image']);
+            $data['image'] = MediaObject::upload($request->file('image'));
             $oldImage = $aboutImage->image;
         }
-        
+        if (!empty($data['alt'])) {
+            $data['alt']['ru'] = !empty($data['alt']['ru']) ? $data['alt']['ru'] : $aboutImage->alt->ru ?? "";
+            $data['alt']['en'] = !empty($data['alt']['en']) ? $data['alt']['en'] : $aboutImage->alt->en ?? "";
+        }
+
         $aboutImage->update($data);
-        
+
         if ($oldImage && Storage::disk('public')->exists($oldImage)) Storage::disk('public')->delete($oldImage);
 
         return $this->sendResponse($aboutImage, "About Image successfully updated");
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): JsonResponse
     {
         $aboutImage = AboutImage::find($id);
 
         if (!$aboutImage) {
             return $this->sendError('Not Found', ['error' => 'Not Found']);
         }
+
+        if (Storage::disk('public')->exists($aboutImage->image)) Storage::disk('public')->delete($aboutImage->image);
 
         $aboutImage->delete();
 

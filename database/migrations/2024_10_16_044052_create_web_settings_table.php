@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('web_settings', function (Blueprint $table) {
             $table->id();
             $table->text('about');
-            $table->text('images');
+            $table->text('images')->comment('[{"image", "alt":{"ru", "en"}}]');
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('image');
             $table->text('description');
-            $table->string('alt');
+            $table->text('alt')->nullable()->comment('{"ru", "en"}');
             $table->integer('sort');
             $table->timestamps();
         });

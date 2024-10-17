@@ -19,7 +19,7 @@ class Project extends Model
     public function files(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data, true),
+            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -27,7 +27,7 @@ class Project extends Model
     public function pictures(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data, true),
+            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -35,7 +35,15 @@ class Project extends Model
     public function planPhotos(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data, true),
+            get: fn($data) => json_decode($data),
+            set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
+        );
+    }
+
+    public function alt(): Attribute
+    {
+        return Attribute::make(
+            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }

@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('banner_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('name');
+            $table->text('alt')->nullable()->comment('{"ru", "en"}');
             $table->string('image');
             $table->integer('sort');
             $table->timestamps();

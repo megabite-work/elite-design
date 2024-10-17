@@ -15,12 +15,13 @@ return new class extends Migration
             $table->string('city');
             $table->unsignedInteger('year');
             $table->text('description');
-            $table->text('files');
+            $table->text('files')->comment('[{"file", "alt":{"ru", "en"}}]');
             $table->string('image');
-            $table->text('pictures');
+            $table->text('alt')->nullable()->comment('{"ru", "en"}');
+            $table->text('pictures')->comment('[{"picture", "alt":{"ru", "en"}}]');
             $table->text('characteristics');
             $table->text('plans');
-            $table->text('plan_photos');
+            $table->text('plan_photos')->comment('[{"plan_photo", "alt":{"ru", "en"}}]');
             $table->string('video');
             $table->string('address');
             $table->string('longitude');
