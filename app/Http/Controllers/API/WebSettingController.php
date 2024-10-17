@@ -78,22 +78,24 @@ class WebSettingController extends BaseController implements HasMiddleware
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = $request->only(['about', 'images']);
+        $data = array_filter($request->only(['about', 'images']));
+        $oldImages = [];
         if (!empty($data['images'])) {
             $images = $webSetting->images ?? [];
             foreach ($images as $key => $image) {
                 if (empty($data['images'][$key])) {
                     $data['images'][$key] = $image;
                 } else {
-                    if (Storage::disk('public')->exists($image)) Storage::disk('public')->delete($image);
-
                     $data['images'][$key] = MediaObject::upload($data['images'][$key]);
+                    if (Storage::disk('public')->exists($image)) $oldImages[] = $image;
                 }
             }
             ksort($data['images']);
         }
 
         $webSetting->update($data);
+
+        Storage::disk('public')->delete($oldImages);
 
         return $this->sendResponse($webSetting, "Web Setting successfully updated");
     }

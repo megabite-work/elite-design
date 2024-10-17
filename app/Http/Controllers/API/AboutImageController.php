@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Helper\MediaObject;
-use App\Models\BannerImage;
+use App\Models\AboutImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class BannerImageController extends BaseController implements HasMiddleware
+class AboutImageController extends BaseController implements HasMiddleware
 {
     public static function middleware(): array
     {
@@ -20,9 +20,9 @@ class BannerImageController extends BaseController implements HasMiddleware
     }
     public function index()
     {
-        $bannerImages = BannerImage::orderBy('sort', 'ASC')->get();
+        $aboutImages = AboutImage::orderBy('sort', 'ASC')->get();
 
-        return $this->sendResponse($bannerImages);
+        return $this->sendResponse($aboutImages);
     }
 
     public function sort(Request $request)
@@ -30,89 +30,91 @@ class BannerImageController extends BaseController implements HasMiddleware
         $items = $request->items;
 
         foreach ($items as $item) {
-            $bannerImage = BannerImage::find($item['id']);
-            $bannerImage->sort = $item['sort'];
-            $bannerImage->save();
+            $aboutImage = AboutImage::find($item['id']);
+            $aboutImage->sort = $item['sort'];
+            $aboutImage->save();
         }
 
-        return $this->sendResponse([], "Banner Image successfully sorted");
+        return $this->sendResponse([], "About Image successfully sorted");
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category_id' => ['bail', 'required', 'integer', 'exists:categories,id'],
-            'name' => ['bail', 'required', 'string', 'max:255'],
-            'sort' => ['bail', 'required', 'integer'],
+            'title' => ['bail', 'required', 'string', 'max:255'],
             'image' => ['bail', 'required', 'image', 'max:10240'],
+            'alt' => ['bail', 'required', 'string', 'max:255'],
+            'description' => ['bail', 'required', 'string'],
+            'sort' => ['bail', 'required', 'integer'],
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = $request->only(['category_id', 'name', 'sort', 'image']);
+        $data = $request->only(['title', 'alt', 'sort', 'image', 'description']);
         $data['image'] = MediaObject::upload($data['image']);
 
-        $bannerImage = BannerImage::create($data);
+        $aboutImage = AboutImage::create($data);
 
-        return $this->sendResponse($bannerImage, "Banner Image successfully created");
+        return $this->sendResponse($aboutImage, "About Image successfully created");
     }
 
     public function show(int $id)
     {
-        $bannerImage = BannerImage::find($id);
+        $aboutImage = AboutImage::find($id);
 
-        if (!$bannerImage) {
+        if (!$aboutImage) {
             return $this->sendError('Not Found', ['error' => 'Not Found']);
         }
 
-        return $this->sendResponse($bannerImage);
+        return $this->sendResponse($aboutImage);
     }
 
     public function update(Request $request, int $id)
     {
-        $bannerImage = BannerImage::find($id);
+        $aboutImage = AboutImage::find($id);
 
-        if (!$bannerImage) {
+        if (!$aboutImage) {
             return $this->sendError('Not Found', ['error' => 'Not Found']);
         }
 
         $validator = Validator::make($request->all(), [
-            'category_id' => ['bail', 'nullable', 'integer', 'exists:categories,id'],
-            'name' => ['bail', 'nullable', 'string', 'max:255'],
-            'sort' => ['bail', 'nullable', 'integer'],
+            'title' => ['bail', 'nullable', 'string', 'max:255'],
             'image' => ['bail', 'nullable', 'image', 'max:10240'],
+            'alt' => ['bail', 'nullable', 'string', 'max:255'],
+            'description' => ['bail', 'nullable', 'string'],
+            'sort' => ['bail', 'nullable', 'integer'],
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = array_filter($request->only(['category_id', 'name', 'sort', 'image']));
+        $data = array_filter($request->only(['title', 'alt', 'sort', 'image', 'description']));
         $oldImage = null;
         if ($request->hasFile('image')) {
             $data['image'] = MediaObject::upload($data['image']);
-            $oldImage = $bannerImage->image;
+            $oldImage = $aboutImage->image;
         }
-
-        $bannerImage->update($data);
-
+        
+        $aboutImage->update($data);
+        
         if ($oldImage && Storage::disk('public')->exists($oldImage)) Storage::disk('public')->delete($oldImage);
 
-        return $this->sendResponse($bannerImage, "Banner Image successfully updated");
+        return $this->sendResponse($aboutImage, "About Image successfully updated");
     }
 
     public function destroy(int $id)
     {
-        $bannerImage = BannerImage::find($id);
+        $aboutImage = AboutImage::find($id);
 
-        if (!$bannerImage) {
+        if (!$aboutImage) {
             return $this->sendError('Not Found', ['error' => 'Not Found']);
         }
 
-        $bannerImage->delete();
+        $aboutImage->delete();
 
-        return $this->sendResponse([], "Banner Image successfully deleted");
+        return $this->sendResponse([], "About Image successfully deleted");
     }
 }

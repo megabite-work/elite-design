@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\BannerImageController;
+use App\Http\Controllers\API\AboutImageController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\WebSettingController;
@@ -19,11 +20,13 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group([], function () {
     Route::post('/categories/sort', [CategoryController::class, 'sort']);
     Route::post('/banner-images/sort', [BannerImageController::class, 'sort']);
+    Route::post('/about-images/sort', [AboutImageController::class, 'sort']);
 });
 
 Route::apiResources([
-    'categories' => CategoryController::class,
     'projects' => ProjectController::class,
+    'categories' => CategoryController::class,
     'web-settings' => WebSettingController::class,
+    'about-images' => AboutImageController::class,
     'banner-images' => BannerImageController::class,
 ]);

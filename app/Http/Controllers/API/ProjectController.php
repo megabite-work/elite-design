@@ -123,9 +123,9 @@ class ProjectController extends BaseController implements HasMiddleware
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = $request->only(['title', 'short_description', 'city', 'year', 'description', 'files', 'image', 'pictures', 'characteristics', 'plans', 'plan_photos', 'video', 'address', 'longitude', 'latitude']);
+        $data = array_filter($request->only(['title', 'short_description', 'city', 'year', 'description', 'files', 'image', 'pictures', 'characteristics', 'plans', 'plan_photos', 'video', 'address', 'longitude', 'latitude']));
         $deleted_files = [];
-        
+
         if (!empty($data['files'])) {
             $files = $project->files ?? [];
             foreach ($files as $key => $file) {
@@ -167,7 +167,7 @@ class ProjectController extends BaseController implements HasMiddleware
             }
             ksort($data['plan_photos']);
         }
-    
+
         if (!empty($data['image'])) {
             $image = $project->image ?? null;
             if (Storage::disk('public')->exists($image)) $deleted_files[] = $image;
@@ -176,9 +176,7 @@ class ProjectController extends BaseController implements HasMiddleware
 
         $project->update($data);
 
-        foreach ($deleted_files as $deleted_file) {
-            Storage::disk('public')->delete($deleted_file);
-        }
+        Storage::disk('public')->delete($deleted_files);
 
         return $this->sendResponse($project, "Project successfully updated");
     }

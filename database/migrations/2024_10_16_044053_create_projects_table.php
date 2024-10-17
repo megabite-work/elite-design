@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('longitude');
             $table->string('latitude');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

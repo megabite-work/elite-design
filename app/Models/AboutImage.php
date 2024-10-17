@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class AboutImage extends Model
 {
     use HasFactory;
 
@@ -15,9 +14,4 @@ class Category extends Model
     protected $hidden = [
         'updated_at',
     ];
-
-    public function bannerImages(): HasMany
-    {
-        return $this->hasMany(BannerImage::class, "category_id", "id");
-    }
 }

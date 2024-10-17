@@ -82,7 +82,9 @@ class CategoryController extends BaseController implements HasMiddleware
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $category->update($request->all());
+        $data = array_filter($request->only(['name', 'sort']));
+
+        $category->update($data);
 
         return $this->sendResponse($category, "Category successfully updated");
     }
