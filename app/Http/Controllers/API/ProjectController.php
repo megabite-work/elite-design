@@ -30,11 +30,15 @@ class ProjectController extends BaseController implements HasMiddleware
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => ['bail', 'required', 'string', 'max:255'],
-            'short_description' => ['bail', 'required', 'string'],
-            'city' => ['bail', 'required', 'string', 'max:255'],
+            'title' => ['bail', 'required', 'array'],
+            'title.*' => ['bail', 'required', 'string', 'max:255'],
+            'short_description' => ['bail', 'required', 'array'],
+            'short_description.*' => ['bail', 'required', 'string', 'max:255'],
+            'city' => ['bail', 'required', 'array'],
+            'city.*' => ['bail', 'required', 'string', 'max:255'],
             'year' => ['bail', 'required', 'integer'],
-            'description' => ['bail', 'required', 'string'],
+            'description' => ['bail', 'required', 'array'],
+            'description.*' => ['bail', 'required', 'string'],
             'files' => ['bail', 'required', 'array'],
             'files.*' => ['bail', 'required', 'file', 'max:10240'],
             'file_alt' => ['bail', 'nullable', 'array'],
@@ -48,8 +52,10 @@ class ProjectController extends BaseController implements HasMiddleware
             'picture_alt' => ['bail', 'nullable', 'array'],
             'picture_alt.*' => ['bail', 'nullable', 'array', 'max:2'],
             'picture_alt.*.*' => ['bail', 'nullable', 'string', 'max:255'],
-            'characteristics' => ['bail', 'required', 'string'],
-            'plans' => ['bail', 'required', 'string'],
+            'characteristics' => ['bail', 'required', 'array'],
+            'characteristics.*' => ['bail', 'required', 'string'],
+            'plans' => ['bail', 'required', 'array'],
+            'plans.*' => ['bail', 'required', 'string'],
             'plan_photos' => ['bail', 'required', 'array'],
             'plan_photos.*' => ['bail', 'required', 'image', 'max:10240'],
             'plan_photo_alt' => ['bail', 'nullable', 'array'],
@@ -115,11 +121,15 @@ class ProjectController extends BaseController implements HasMiddleware
         }
 
         $validator = Validator::make($request->all(), [
-            'title' => ['bail', 'nullable', 'string', 'max:255'],
-            'short_description' => ['bail', 'nullable', 'string'],
-            'city' => ['bail', 'nullable', 'string', 'max:255'],
+            'title' => ['bail', 'nullable', 'array'],
+            'title.*' => ['bail', 'nullable', 'string', 'max:255'],
+            'short_description' => ['bail', 'nullable', 'array'],
+            'short_description.*' => ['bail', 'nullable', 'string', 'max:255'],
+            'city' => ['bail', 'nullable', 'array'],
+            'city.*' => ['bail', 'nullable', 'string', 'max:255'],
             'year' => ['bail', 'nullable', 'integer'],
-            'description' => ['bail', 'nullable', 'string'],
+            'description' => ['bail', 'nullable', 'array'],
+            'description.*' => ['bail', 'nullable', 'string'],
             'files' => ['bail', 'nullable', 'array'],
             'files.*' => ['bail', 'nullable', 'file', 'max:10240'],
             'file_alt' => ['bail', 'nullable', 'array'],
@@ -133,8 +143,10 @@ class ProjectController extends BaseController implements HasMiddleware
             'picture_alt' => ['bail', 'nullable', 'array'],
             'picture_alt.*' => ['bail', 'nullable', 'array', 'max:2'],
             'picture_alt.*.*' => ['bail', 'nullable', 'string', 'max:255'],
-            'characteristics' => ['bail', 'nullable', 'string'],
-            'plans' => ['bail', 'nullable', 'string'],
+            'characteristics' => ['bail', 'nullable', 'array'],
+            'characteristics.*' => ['bail', 'nullable', 'string'],
+            'plans' => ['bail', 'nullable', 'array'],
+            'plans.*' => ['bail', 'nullable', 'string'],
             'plan_photos' => ['bail', 'nullable', 'array'],
             'plan_photos.*' => ['bail', 'nullable', 'image', 'max:10240'],
             'plan_photo_alt' => ['bail', 'nullable', 'array'],
@@ -198,6 +210,19 @@ class ProjectController extends BaseController implements HasMiddleware
             $data['alt']['ru'] = !empty($data['alt']['ru']) ? $data['alt']['ru'] : $project->alt->ru ?? "";
             $data['alt']['en'] = !empty($data['alt']['en']) ? $data['alt']['en'] : $project->alt->en ?? "";
         }
+
+        $data['description']['en'] = !empty($data['description']['en']) ? $data['description']['en'] : $webSetting->description->en ?? "";
+        $data['description']['ru'] = !empty($data['description']['ru']) ? $data['description']['ru'] : $webSetting->description->ru ?? "";
+        $data['title']['en'] = !empty($data['title']['en']) ? $data['title']['en'] : $webSetting->title->en ?? "";
+        $data['title']['ru'] = !empty($data['title']['ru']) ? $data['title']['ru'] : $webSetting->title->ru ?? "";
+        $data['short_description']['en'] = !empty($data['short_description']['en']) ? $data['short_description']['en'] : $webSetting->short_description->en ?? "";
+        $data['short_description']['ru'] = !empty($data['short_description']['ru']) ? $data['short_description']['ru'] : $webSetting->short_description->ru ?? "";
+        $data['city']['en'] = !empty($data['city']['en']) ? $data['city']['en'] : $webSetting->city->en ?? "";
+        $data['city']['ru'] = !empty($data['city']['ru']) ? $data['city']['ru'] : $webSetting->city->ru ?? "";
+        $data['characteristics']['en'] = !empty($data['characteristics']['en']) ? $data['characteristics']['en'] : $webSetting->characteristics->en ?? "";
+        $data['characteristics']['ru'] = !empty($data['characteristics']['ru']) ? $data['characteristics']['ru'] : $webSetting->characteristics->ru ?? "";
+        $data['plans']['en'] = !empty($data['plans']['en']) ? $data['plans']['en'] : $webSetting->plans->en ?? "";
+        $data['plans']['ru'] = !empty($data['plans']['ru']) ? $data['plans']['ru'] : $webSetting->plans->ru ?? "";
         unset($data['file_alt'], $data['picture_alt'], $data['plan_photo_alt']);
 
         $project->update($data);

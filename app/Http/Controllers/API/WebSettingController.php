@@ -30,7 +30,8 @@ class WebSettingController extends BaseController implements HasMiddleware
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'about' => ['bail', 'required', 'string'],
+            'about' => ['bail', 'required', 'array'],
+            'about.*' => ['bail', 'required', 'string'],
             'images' => ['bail', 'required', 'array'],
             'images.*' => ['bail', 'required', 'image', 'max:10240'],
             'alt' => ['bail', 'nullable', 'array'],
@@ -42,7 +43,7 @@ class WebSettingController extends BaseController implements HasMiddleware
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $data = $request->only(['about', 'images', 'alt']);
+        $data = $request->only(['about', 'alt']);
         foreach ($request->file('images') as $key => $image) {
             $data['images'][$key]['image'] = MediaObject::upload($image);
             $data['images'][$key]['alt'] = !empty($data['alt'][$key]) ? $data['alt'][$key] : null;
@@ -75,7 +76,8 @@ class WebSettingController extends BaseController implements HasMiddleware
         }
 
         $validator = Validator::make($request->all(), [
-            'about' => ['bail', 'nullable', 'string'],
+            'about' => ['bail', 'nullable', 'array'],
+            'about.*' => ['bail', 'nullable', 'string'],
             'images' => ['bail', 'nullable', 'array'],
             'images.*' => ['bail', 'nullable', 'image', 'max:10240'],
             'alt' => ['bail', 'nullable', 'array'],
@@ -100,6 +102,8 @@ class WebSettingController extends BaseController implements HasMiddleware
             $data['images'][$key]['alt']['en'] = !empty($data['alt'][$key]['en']) ? $data['alt'][$key]['en'] : $image->alt->en ?? "";
             $data['images'][$key]['alt']['ru'] = !empty($data['alt'][$key]['ru']) ? $data['alt'][$key]['ru'] : $image->alt->ru ?? "";
         }
+        $data['about']['en'] = !empty($data['about']['en']) ? $data['about']['en'] : $webSetting->about->en ?? "";
+        $data['about']['ru'] = !empty($data['about']['ru']) ? $data['about']['ru'] : $webSetting->about->ru ?? "";
         ksort($data['images']);
         unset($data['alt']);
 

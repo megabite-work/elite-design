@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('about_images', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->comment('{"ru", "en"}');
             $table->string('image');
-            $table->text('description');
+            $table->text('description')->comment('{"ru", "en"}');
             $table->text('alt')->nullable()->comment('{"ru", "en"}');
             $table->integer('sort');
             $table->timestamps();

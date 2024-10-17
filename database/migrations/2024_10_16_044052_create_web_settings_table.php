@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('web_settings', function (Blueprint $table) {
             $table->id();
-            $table->text('about');
+            $table->text('about')->comment('{"ru", "en"}');
             $table->text('images')->comment('[{"image", "alt":{"ru", "en"}}]');
             $table->timestamps();
         });

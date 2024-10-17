@@ -612,15 +612,24 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "title",
+									"key": "title[en]",
 									"value": "Title",
 									"type": "text"
 								},
 								{
-									"key": "alt[ru]",
-									"value": "alt_ru",
-									"type": "text",
-									"disabled": true
+									"key": "title[ru]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "description[en]",
+									"value": "Description",
+									"type": "text"
+								},
+								{
+									"key": "description[ru]",
+									"value": "",
+									"type": "text"
 								},
 								{
 									"key": "image",
@@ -628,13 +637,14 @@
 									"src": "/C:/Users/user/Pictures/123.jpg"
 								},
 								{
-									"key": "description",
-									"value": "Description",
-									"type": "text"
-								},
-								{
 									"key": "alt[en]",
 									"value": "alt_en",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "alt[ru]",
+									"value": "alt_ru",
 									"type": "text",
 									"disabled": true
 								}
@@ -672,8 +682,14 @@
 									"type": "text"
 								},
 								{
-									"key": "title",
+									"key": "title[en]",
 									"value": "Title 2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "title[ru]",
+									"value": "",
 									"type": "text",
 									"disabled": true
 								},
@@ -695,8 +711,14 @@
 									"disabled": true
 								},
 								{
-									"key": "description",
+									"key": "description[en]",
 									"value": "Description",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description[ru]",
+									"value": "",
 									"type": "text",
 									"disabled": true
 								}
@@ -811,7 +833,13 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "about",
+									"key": "about[ru]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "about[en]",
 									"value": "About",
 									"type": "text"
 								},
@@ -901,13 +929,13 @@
 									"type": "text"
 								},
 								{
-									"key": "images[0]",
-									"type": "file",
-									"src": "/C:/Users/home/Pictures/images/biography1.png",
+									"key": "about[ru]",
+									"value": "",
+									"type": "text",
 									"disabled": true
 								},
 								{
-									"key": "about",
+									"key": "about[en]",
 									"value": "",
 									"type": "text",
 									"disabled": true
@@ -916,6 +944,12 @@
 									"key": "alt[0][ru]",
 									"value": "",
 									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "images[0]",
+									"type": "file",
+									"src": "/C:/Users/home/Pictures/images/biography1.png",
 									"disabled": true
 								},
 								{
@@ -1011,17 +1045,17 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "title",
+									"key": "title[ru]",
 									"value": "Title",
 									"type": "text"
 								},
 								{
-									"key": "short_description",
+									"key": "short_description[ru]",
 									"value": "Short_description",
 									"type": "text"
 								},
 								{
-									"key": "city",
+									"key": "city[ru]",
 									"value": "City",
 									"type": "text"
 								},
@@ -1031,7 +1065,7 @@
 									"type": "text"
 								},
 								{
-									"key": "description",
+									"key": "description[ru]",
 									"value": "Description",
 									"type": "text"
 								},
@@ -1088,12 +1122,12 @@
 									"type": "text"
 								},
 								{
-									"key": "characteristics",
+									"key": "characteristics[ru]",
 									"value": "Characteristics",
 									"type": "text"
 								},
 								{
-									"key": "plans",
+									"key": "plans[ru]",
 									"value": "Plans",
 									"type": "text"
 								},
@@ -1136,6 +1170,36 @@
 									"key": "latitude",
 									"value": "Lattitude",
 									"type": "text"
+								},
+								{
+									"key": "title[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "short_description[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "city[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "description[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "characteristics[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "plans[en]",
+									"value": "",
+									"type": "text"
 								}
 							]
 						},
@@ -1171,158 +1235,160 @@
 									"type": "text"
 								},
 								{
-									"key": "title",
-									"value": "Title 2",
+									"key": "title[ru]",
+									"value": "Title",
 									"type": "text"
 								},
 								{
-									"key": "short_description",
-									"value": "Short_description 2",
+									"key": "short_description[ru]",
+									"value": "Short_description",
 									"type": "text"
 								},
 								{
-									"key": "city",
-									"value": "City 2",
+									"key": "city[ru]",
+									"value": "City",
 									"type": "text"
 								},
 								{
 									"key": "year",
-									"value": "2025",
+									"value": "2024",
 									"type": "text"
 								},
 								{
-									"key": "description",
-									"value": "Description 2",
+									"key": "description[ru]",
+									"value": "Description",
 									"type": "text"
 								},
 								{
 									"key": "files[]",
 									"type": "file",
 									"src": [
-										"/C:/Users/home/Pictures/images/biography1.png",
-										"/C:/Users/home/Pictures/images/biography2.png"
-									],
-									"disabled": true
+										"/C:/Users/user/Pictures/66e524f0deb82 (1).png",
+										"/C:/Users/user/Pictures/66e524f0deb82.png"
+									]
 								},
 								{
 									"key": "file_alt[0][en]",
-									"value": "2",
+									"value": "en_0",
 									"type": "text"
 								},
 								{
-									"key": "file_alt[0][ru]",
-									"value": "2",
+									"key": "file_alt[1][ru]",
+									"value": "ru_1",
 									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/home/Pictures/images/card_item_img.png",
-									"disabled": true
+									"src": "/C:/Users/user/Pictures/66e524f0deb82.png"
 								},
 								{
 									"key": "alt[ru]",
-									"value": "",
-									"type": "text",
-									"disabled": true
+									"value": "alt_ru",
+									"type": "text"
 								},
 								{
 									"key": "alt[en]",
-									"value": "",
-									"type": "text",
-									"disabled": true
+									"value": "alt_en",
+									"type": "text"
 								},
 								{
 									"key": "pictures[]",
 									"type": "file",
 									"src": [
-										"/C:/Users/home/Pictures/images/change-password.png",
-										"/C:/Users/home/Pictures/images/credit-card.png",
-										"/C:/Users/home/Pictures/images/crm_row_img2.png",
-										"/C:/Users/home/Pictures/images/crm_row_img3.png",
-										"/C:/Users/home/Pictures/images/crm_row_img4.png"
-									],
-									"disabled": true
+										"/C:/Users/user/Pictures/66e524f0deb82 (1).png",
+										"/C:/Users/user/Pictures/66e524f0deb82.png",
+										"/C:/Users/user/Pictures/123.jpg"
+									]
 								},
 								{
 									"key": "picture_alt[0][en]",
-									"value": "",
-									"type": "text",
-									"disabled": true
+									"value": "pic_en_0",
+									"type": "text"
 								},
 								{
 									"key": "picture_alt[0][ru]",
-									"value": "",
-									"type": "text",
-									"disabled": true
+									"value": "pic_ru_0",
+									"type": "text"
 								},
 								{
-									"key": "characteristics",
+									"key": "characteristics[ru]",
 									"value": "Characteristics",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
-									"key": "plans",
+									"key": "plans[ru]",
 									"value": "Plans",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
 									"key": "plan_photos[]",
 									"type": "file",
 									"src": [
-										"/C:/Users/home/Pictures/images/card_title_bg.png",
-										"/C:/Users/home/Pictures/images/change-password.png",
-										"/C:/Users/home/Pictures/images/credit-card.png",
-										"/C:/Users/home/Pictures/images/crm_row_img2.png",
-										"/C:/Users/home/Pictures/images/crm_row_img3.png",
-										"/C:/Users/home/Pictures/images/crm_row_img4.png"
-									],
-									"disabled": true
+										"/C:/Users/user/Pictures/66e524f0deb82 (1).png",
+										"/C:/Users/user/Pictures/66e524f0deb82.png"
+									]
 								},
 								{
 									"key": "plan_photo_alt[0][ru]",
-									"value": "0",
-									"type": "text"
+									"value": "",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "plan_photo_alt[0][en]",
-									"value": "0",
-									"type": "text"
+									"value": "",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "video",
 									"value": "https://youtube.com",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
 									"key": "address",
 									"value": "Address",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
 									"key": "longitude",
 									"value": "Longtittude",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
 									"key": "latitude",
 									"value": "Lattitude",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "plan_photo_alt[1][ru]",
-									"value": "1",
 									"type": "text"
 								},
 								{
-									"key": "plan_photo_alt[1][en]",
-									"value": "1",
+									"key": "title[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "short_description[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "city[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "description[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "characteristics[en]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "plans[en]",
+									"value": "",
 									"type": "text"
 								}
 							]

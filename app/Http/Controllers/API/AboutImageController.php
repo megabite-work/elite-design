@@ -43,11 +43,13 @@ class AboutImageController extends BaseController implements HasMiddleware
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'title' => ['bail', 'required', 'string', 'max:255'],
+            'title' => ['bail', 'required', 'array'],
+            'title.*' => ['bail', 'required', 'string', 'max:255'],
             'image' => ['bail', 'required', 'image', 'max:10240'],
             'alt' => ['bail', 'nullable', 'array', 'max:2'],
             'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
-            'description' => ['bail', 'required', 'string'],
+            'description' => ['bail', 'required', 'array'],
+            'description.*' => ['bail', 'required', 'string'],
         ]);
 
         if ($validator->fails()) {
@@ -83,11 +85,13 @@ class AboutImageController extends BaseController implements HasMiddleware
         }
 
         $validator = Validator::make($request->all(), [
-            'title' => ['bail', 'nullable', 'string', 'max:255'],
+            'title' => ['bail', 'nullable', 'array'],
+            'title.*' => ['bail', 'nullable', 'string', 'max:255'],
             'image' => ['bail', 'nullable', 'image', 'max:10240'],
             'alt' => ['bail', 'nullable', 'array', 'max:2'],
             'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
-            'description' => ['bail', 'nullable', 'string'],
+            'description' => ['bail', 'nullable', 'array'],
+            'description.*' => ['bail', 'nullable', 'string'],
         ]);
 
         if ($validator->fails()) {
@@ -104,6 +108,11 @@ class AboutImageController extends BaseController implements HasMiddleware
             $data['alt']['ru'] = !empty($data['alt']['ru']) ? $data['alt']['ru'] : $aboutImage->alt->ru ?? "";
             $data['alt']['en'] = !empty($data['alt']['en']) ? $data['alt']['en'] : $aboutImage->alt->en ?? "";
         }
+
+        $data['description']['en'] = !empty($data['description']['en']) ? $data['description']['en'] : $webSetting->description->en ?? "";
+        $data['description']['ru'] = !empty($data['description']['ru']) ? $data['description']['ru'] : $webSetting->description->ru ?? "";
+        $data['title']['en'] = !empty($data['title']['en']) ? $data['title']['en'] : $webSetting->title->en ?? "";
+        $data['title']['ru'] = !empty($data['title']['ru']) ? $data['title']['ru'] : $webSetting->title->ru ?? "";
 
         $aboutImage->update($data);
 

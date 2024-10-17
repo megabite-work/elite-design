@@ -47,4 +47,52 @@ class Project extends Model
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
+
+    public function title(): Attribute
+    {
+        return Attribute::make(
+            get: fn($data) => json_decode($data),
+            set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
+        );
+    }
+
+    public function description(): Attribute
+    {
+        return Attribute::make(
+            get: fn($data) => json_decode($data),
+            set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
+        );
+    }
+
+    public function city(): Attribute
+    {
+        return Attribute::make(
+            get: fn($data) => json_decode($data),
+            set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
+        );
+    }
+
+    public function shortDescription(): Attribute
+    {
+        return Attribute::make(
+            get: fn($data) => json_decode($data),
+            set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
+        );
+    }
+
+    public function characteristics(): Attribute
+    {
+        return Attribute::make(
+            get: fn($data) => json_decode($data),
+            set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
+        );
+    }
+
+    public function plans(): Attribute
+    {
+        return Attribute::make(
+            get: fn($data) => json_decode($data),
+            set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
+        );
+    }
 }
