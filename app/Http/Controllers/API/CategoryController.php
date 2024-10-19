@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -40,11 +41,14 @@ class CategoryController extends BaseController implements HasMiddleware
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['bail', 'required', 'string', 'unique:categories,name'],
+            'name' => ['bail', 'required', 'string'],
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
+        }
+        if (Category::where('name', $request->name)->count('id') > 0) {
+            return $this->sendError('Category already exists');
         }
 
         $data = $request->only(['name']);
