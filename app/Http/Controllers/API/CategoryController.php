@@ -74,7 +74,7 @@ class CategoryController extends BaseController implements HasMiddleware
         }
 
         $validator = Validator::make($request->all(), [
-            'name' => ['bail', 'nullable', 'string', "unique:categories,name,exists,$category->name"],
+            'name' => ['bail', 'nullable', 'string', "unique:categories,name,$category->id"],
         ]);
 
         if ($validator->fails()) {
