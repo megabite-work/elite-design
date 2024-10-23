@@ -20,9 +20,9 @@ class ProjectController extends BaseController implements HasMiddleware
             new Middleware('auth:api', except: ['index', 'show']),
         ];
     }
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $projects = Project::get();
+        $projects = Project::paginate($request->get('per_page', 10));
 
         return $this->sendResponse($projects);
     }
