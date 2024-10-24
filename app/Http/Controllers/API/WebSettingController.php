@@ -94,7 +94,7 @@ class WebSettingController extends BaseController implements HasMiddleware
         foreach ($webSetting->images as $key => $image) {
             if (!empty($request->file('images')[$key])) {
                 $data['images'][$key]['image'] = MediaObject::upload($request->file('images')[$key]);
-                if (Storage::disk('public')->exists($image)) $oldImages[] = $image;
+                if (Storage::disk('public')->exists($image->image)) $oldImages[] = $image->image;
             } else {
                 $data['images'][$key]['image'] = $image->image;
             }

@@ -19,7 +19,7 @@ class WebSetting extends Model
     public function images(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data, true),
+            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
