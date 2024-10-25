@@ -143,7 +143,7 @@ class BannerImageController extends BaseController implements HasMiddleware
         $deleted_images = array_map(fn($image) => $image->image, $bannerImage->images);
 
         $bannerImage->delete();
-        Storage::disk('public')->delete($deleted_images);
+        Storage::disk('public')->delete($deleted_images ?? []);
 
         return $this->sendResponse([], "Banner Image successfully deleted");
     }
