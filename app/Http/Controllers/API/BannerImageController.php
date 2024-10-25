@@ -105,7 +105,7 @@ class BannerImageController extends BaseController implements HasMiddleware
 
         $deleted_files = [];
         foreach ($request->file('images') as $key => $image) {
-            dd($bannerImage->images[$key], $bannerImage->images[$key]->image);
+            dd($bannerImage->images);
             if (!empty($bannerImage->images[$key]->image)) {
                 if (Storage::disk('public')->exists($bannerImage->images[$key]->image)) $deleted_files[] = $bannerImage->images[$key]->image;
             }
