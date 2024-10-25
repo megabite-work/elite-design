@@ -105,6 +105,7 @@ class BannerImageController extends BaseController implements HasMiddleware
 
         $deleted_files = [];
         foreach ($request->file('images') as $key => $image) {
+            dd($bannerImage->images[$key], $bannerImage->images[$key]->image);
             if (!empty($bannerImage->images[$key]->image)) {
                 if (Storage::disk('public')->exists($bannerImage->images[$key]->image)) $deleted_files[] = $bannerImage->images[$key]->image;
             }
@@ -112,14 +113,14 @@ class BannerImageController extends BaseController implements HasMiddleware
             $data['images'][$key]['image'] = MediaObject::upload($request->file('images')[$key]);
             $data['images'][$key]['format'] = !empty($request->formats[$key]) ? $request->formats[$key] : $image->format ?? "";
         }
-        ksort($data['images']);
         foreach ($bannerImage->images as $key => $image) {
             if (empty($data['images'][$key]) || empty($data['images'][$key]['image'])) {
                 $data['images'][$key]['image'] = $image->image;
                 $data['images'][$key]['format'] = $image->format ?? "";
             }
         }
-
+        ksort($data['images']);
+        
         if (!empty($data['alt'])) {
             $data['alt']['ru'] = !empty($data['alt']['ru']) ? $data['alt']['ru'] : $bannerImage->alt->ru ?? "";
             $data['alt']['en'] = !empty($data['alt']['en']) ? $data['alt']['en'] : $bannerImage->alt->en ?? "";
