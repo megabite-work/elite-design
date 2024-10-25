@@ -56,7 +56,7 @@ class BannerImageController extends BaseController implements HasMiddleware
         }
 
         $data = $request->only(['category_id', 'alt']);
-        foreach ($request->file('images') as $key => $image) {
+        foreach ($request->file('images', []) as $key => $image) {
             $data['images'][$key]['image'] = MediaObject::upload($image);
             $data['images'][$key]['format'] = !empty($request->formats[$key]) ? $request->formats[$key] : "";
         }
@@ -104,7 +104,7 @@ class BannerImageController extends BaseController implements HasMiddleware
         $data = array_filter($request->only(['category_id', 'alt']));
 
         $deleted_files = [];
-        foreach ($request->file('images') as $key => $image) {
+        foreach ($request->file('images', []) as $key => $image) {
             if (!empty($bannerImage->images->$key->image)) {
                 if (Storage::disk('public')->exists($bannerImage->images->$key->image)) $deleted_files[] = $bannerImage->images->$key->image;
             }

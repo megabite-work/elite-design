@@ -73,19 +73,19 @@ class ProjectController extends BaseController implements HasMiddleware
 
         $data = $request->only(['title', 'short_description', 'city', 'year', 'description', 'file_alt', 'alt', 'picture_alt', 'characteristics', 'plans', 'plan_photo_alt', 'video', 'address', 'longitude', 'latitude']);
 
-        foreach ($request->file('files') as $key => $file) {
+        foreach ($request->file('files',[]) as $key => $file) {
             $data['files'][$key]['file'] = MediaObject::upload($file, 'files');
             $data['files'][$key]['alt'] = !empty($data['file_alt'][$key]) ? $data['file_alt'][$key] : null;
         }
         ksort($data['files']);
 
-        foreach ($request->file('pictures') as $key => $picture) {
+        foreach ($request->file('pictures',[]) as $key => $picture) {
             $data['pictures'][$key]['picture'] = MediaObject::upload($picture);
             $data['pictures'][$key]['alt'] = !empty($data['picture_alt'][$key]) ? $data['picture_alt'][$key] : null;
         }
         ksort($data['pictures']);
 
-        foreach ($request->file('plan_photos') as $key => $plan_photo) {
+        foreach ($request->file('plan_photos',[]) as $key => $plan_photo) {
             $data['plan_photos'][$key]['plan_photo'] = MediaObject::upload($plan_photo);
             $data['plan_photos'][$key]['alt'] = !empty($data['plan_photo_alt'][$key]) ? $data['plan_photo_alt'][$key] : null;
         }

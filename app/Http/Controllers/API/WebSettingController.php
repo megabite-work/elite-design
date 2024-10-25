@@ -44,7 +44,7 @@ class WebSettingController extends BaseController implements HasMiddleware
         }
 
         $data = $request->only(['about', 'alt']);
-        foreach ($request->file('images') as $key => $image) {
+        foreach ($request->file('images',[]) as $key => $image) {
             $data['images'][$key]['image'] = MediaObject::upload($image);
             $data['images'][$key]['alt'] = !empty($data['alt'][$key]) ? $data['alt'][$key] : null;
         }
