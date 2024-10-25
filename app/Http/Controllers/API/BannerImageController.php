@@ -45,7 +45,10 @@ class BannerImageController extends BaseController implements HasMiddleware
             'category_id' => ['bail', 'required', 'integer', 'exists:categories,id'],
             'alt' => ['bail', 'nullable', 'array', 'max:2'],
             'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
-            'image' => ['bail', 'required', 'image', 'max:10240'],
+            'images' => ['bail', 'required', 'array'],
+            'images.*' => ['bail', 'required', 'image', 'max:10240'],
+            'formats' => ['bail', 'required', 'array'],
+            'formats.*' => ['bail', 'required', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -53,7 +56,11 @@ class BannerImageController extends BaseController implements HasMiddleware
         }
 
         $data = $request->only(['category_id', 'alt']);
-        $data['image'] = MediaObject::upload($request->file('image'));
+        foreach ($request->file('images') as $key => $image) {
+            $data['images'][$key]['image'] = MediaObject::upload($image);
+            $data['images'][$key]['format'] = !empty($data['formats'][$key]) ? $data['formats'][$key] : "";
+        }
+        ksort($data['images']);
         $data['sort'] = (BannerImage::latest()->first()->id ?? 0) + 1;
 
         $bannerImage = BannerImage::create($data);
@@ -84,7 +91,10 @@ class BannerImageController extends BaseController implements HasMiddleware
             'category_id' => ['bail', 'nullable', 'integer', 'exists:categories,id'],
             'alt' => ['bail', 'nullable', 'array', 'max:2'],
             'alt.*' => ['bail', 'nullable', 'string', 'max:255'],
-            'image' => ['bail', 'nullable', 'image', 'max:10240'],
+            'images' => ['bail', 'nullable', 'array'],
+            'images.*' => ['bail', 'nullable', 'image', 'max:10240'],
+            'formats' => ['bail', 'nullable', 'array'],
+            'formats.*' => ['bail', 'nullable', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -92,11 +102,24 @@ class BannerImageController extends BaseController implements HasMiddleware
         }
 
         $data = array_filter($request->only(['category_id', 'alt']));
-        $oldImage = null;
-        if ($request->hasFile('image')) {
-            $data['image'] = MediaObject::upload($request->file('image'));
-            $oldImage = $bannerImage->image;
+
+        $deleted_files = [];
+        foreach ($request->file('images') as $key => $image) {
+            if (!empty($bannerImage->images[$key]->image)) {
+                if (Storage::disk('public')->exists($bannerImage->images[$key]->image)) $deleted_files[] = $bannerImage->images[$key]->image;
+            }
+
+            $data['images'][$key]['image'] = MediaObject::upload($request->file('images')[$key]);
+            $data['images'][$key]['format'] = !empty($data['formats'][$key]) ? $data['formats'][$key] : $image->format ?? "";
         }
+        ksort($data['images']);
+        foreach ($bannerImage->images as $key => $image) {
+            if (empty($data['images'][$key]) || empty($data['images'][$key]['image'])) {
+                $data['images'][$key]['image'] = $image->image;
+                $data['images'][$key]['format'] = $image->format ?? "";
+            }
+        }
+
         if (!empty($data['alt'])) {
             $data['alt']['ru'] = !empty($data['alt']['ru']) ? $data['alt']['ru'] : $bannerImage->alt->ru ?? "";
             $data['alt']['en'] = !empty($data['alt']['en']) ? $data['alt']['en'] : $bannerImage->alt->en ?? "";
@@ -104,7 +127,7 @@ class BannerImageController extends BaseController implements HasMiddleware
 
         $bannerImage->update($data);
 
-        if ($oldImage && Storage::disk('public')->exists($oldImage)) Storage::disk('public')->delete($oldImage);
+        if ($deleted_files) Storage::disk('public')->delete($deleted_files);
 
         return $this->sendResponse($bannerImage, "Banner Image successfully updated");
     }
@@ -117,9 +140,10 @@ class BannerImageController extends BaseController implements HasMiddleware
             return $this->sendError('Not Found', ['error' => 'Not Found']);
         }
 
-        if (Storage::disk('public')->exists($bannerImage->image)) Storage::disk('public')->delete($bannerImage->image);
+        $deleted_images = array_map(fn($image) => $image->image, $bannerImage->images);
 
         $bannerImage->delete();
+        Storage::disk('public')->delete($deleted_images);
 
         return $this->sendResponse([], "Banner Image successfully deleted");
     }

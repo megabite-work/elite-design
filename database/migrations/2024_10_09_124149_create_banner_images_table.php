@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->text('alt')->nullable()->comment('{"ru", "en"}');
-            $table->string('image');
+            $table->text('images');
             $table->integer('sort');
             $table->timestamps();
         });
