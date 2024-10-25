@@ -58,7 +58,7 @@ class BannerImageController extends BaseController implements HasMiddleware
         $data = $request->only(['category_id', 'alt']);
         foreach ($request->file('images') as $key => $image) {
             $data['images'][$key]['image'] = MediaObject::upload($image);
-            $data['images'][$key]['format'] = !empty($data['formats'][$key]) ? $data['formats'][$key] : "";
+            $data['images'][$key]['format'] = !empty($request->formats[$key]) ? $request->formats[$key] : "";
         }
         ksort($data['images']);
         $data['sort'] = (BannerImage::latest()->first()->id ?? 0) + 1;
@@ -110,7 +110,7 @@ class BannerImageController extends BaseController implements HasMiddleware
             }
 
             $data['images'][$key]['image'] = MediaObject::upload($request->file('images')[$key]);
-            $data['images'][$key]['format'] = !empty($data['formats'][$key]) ? $data['formats'][$key] : $image->format ?? "";
+            $data['images'][$key]['format'] = !empty($request->formats[$key]) ? $request->formats[$key] : $image->format ?? "";
         }
         ksort($data['images']);
         foreach ($bannerImage->images as $key => $image) {
