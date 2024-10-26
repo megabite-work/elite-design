@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Action\Category\CreateAction;
+use App\Action\Category\DeleteAction;
+use App\Action\Category\IndexAction;
+use App\Action\Category\ShowAction;
+use App\Action\Category\SortAction;
+use App\Action\Category\UpdateAction;
+use App\Dto\Category\CreateDto;
+use App\Dto\Category\QueryDto;
+use App\Dto\Category\SortDto;
+use App\Dto\Category\UpdateDto;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends BaseController implements HasMiddleware
 {
@@ -17,87 +25,33 @@ class CategoryController extends BaseController implements HasMiddleware
         ];
     }
 
-    public function index()
+    public function index(QueryDto $dto, IndexAction $action): JsonResponse
     {
-        $categories = Category::with('bannerImages')->orderBy('sort', 'ASC')->get();
-
-        return $this->sendResponse($categories);
+        return $this->sendIndexResponse($action($dto));
     }
 
-    public function sort(Request $request)
+    public function sort(SortDto $dto, SortAction $action): JsonResponse
     {
-        $items = $request->items;
-
-        foreach ($items as $item) {
-            $category = Category::find($item['id']);
-            $category->sort = $item['sort'];
-            $category->save();
-        }
-
-        return $this->sendResponse([], "Category successfully sorted");
+        return $this->sendResponse($action($dto), "Category successfully sorted");
     }
 
-    public function store(Request $request)
+    public function store(CreateDto $dto, CreateAction $action): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => ['bail', 'required', 'string', 'unique:categories,name'],
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $data = $request->only(['name']);
-        $data['sort'] = (Category::latest()->first()->id ?? 0) + 1;
-
-        $category = Category::create($data);
-
-        return $this->sendResponse($category, "Category successfully created");
+        return $this->sendResponse($action($dto), "Category successfully created");
     }
 
-    public function show(int $id)
+    public function show(int $id, ShowAction $action): JsonResponse
     {
-        $category = Category::with('bannerImages')->find($id);
-
-        if (!$category) {
-            return $this->sendError('Not Found', ['error' => 'Not Found']);
-        }
-
-        return $this->sendResponse($category);
+        return $this->sendResponse($action($id));
     }
 
-    public function update(Request $request, int $id)
+    public function update(UpdateDto $dto, UpdateAction $action): JsonResponse
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return $this->sendError('Not Found', ['error' => 'Not Found']);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'name' => ['bail', 'nullable', 'string', "unique:categories,name,$category->id"],
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $data = array_filter($request->only(['name']));
-
-        $category->update($data);
-
-        return $this->sendResponse($category, "Category successfully updated");
+        return $this->sendResponse($action($dto), "Category successfully updated");
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id, DeleteAction $action): JsonResponse
     {
-        $category = Category::find($id);
-
-        if (!$category) {
-            return $this->sendError('Not Found', ['error' => 'Not Found']);
-        }
-
-        $category->delete();
-
-        return $this->sendResponse([], "Category successfully deleted");
+        return $this->sendResponse($action($id), "Category successfully deleted");
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Mail\ContactMe;
-use Illuminate\Http\Request;
+use App\Action\ContactMe\SendMailAction;
+use App\Dto\ContactMe\SendMailDto;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 
 class ContactMeController extends BaseController implements HasMiddleware
 {
@@ -18,20 +17,8 @@ class ContactMeController extends BaseController implements HasMiddleware
         ];
     }
 
-    public function contactMe(Request $request)
+    public function contactMe(SendMailDto $dto, SendMailAction $action): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => ['bail', 'required', 'string', 'max:255'],
-            'phone' => ['bail', 'required', 'string', 'max:255'],
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $data = $request->only(['name', 'phone']);
-        Mail::queue(new ContactMe($data['name'], $data['phone']));
-
-        return $this->sendResponse([], "Mail successfully pushed");
+        return $this->sendResponse($action($dto), "Mail successfully send");
     }
 }

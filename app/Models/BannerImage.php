@@ -12,6 +12,11 @@ class BannerImage extends Model
     use HasFactory;
 
     protected $guarded = [];
+    
+    protected $casts = [
+        'alt' => 'array',
+        'images' => 'array',
+    ];
 
     protected $hidden = [
         'updated_at',
@@ -25,7 +30,6 @@ class BannerImage extends Model
     public function alt(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -33,7 +37,6 @@ class BannerImage extends Model
     public function images(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
