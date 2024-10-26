@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Action\Auth\ChangePasswordAction;
+use App\Action\Auth\RegisterAction;
+use App\Dto\Auth\ChangePasswordDto;
+use App\Dto\Auth\LoginDto;
+use App\Dto\Auth\RegisterDto;
+use App\Dto\User\UserDto;
 use App\Http\Controllers\API\BaseController;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends BaseController implements HasMiddleware
 {
@@ -24,33 +27,16 @@ class AuthController extends BaseController implements HasMiddleware
         return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
     }
 
-    public function register(Request $request): JsonResponse
+    public function register(RegisterDto $dto, RegisterAction $action): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'login' => ['bail', 'required', 'string', 'max:255', 'min:3', 'unique:users,login'],
-            'email' => ['bail', 'nullable', 'email'],
-            'password' => ['bail', 'required', 'string'],
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['user'] =  $user;
-
-        return $this->sendResponse($success, 'User register successfully.');
+        return $this->sendResponse(['user' => $action($dto)], 'User register successfully.');
     }
 
 
-    public function login(): JsonResponse
+    public function login(LoginDto $dto): JsonResponse
     {
-        $credentials = request(['login', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+        if (! $token = auth()->attempt($dto->toArray())) {
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
 
         $success = $this->respondWithToken($token);
@@ -58,11 +44,14 @@ class AuthController extends BaseController implements HasMiddleware
         return $this->sendResponse($success, 'User login successfully.');
     }
 
+    public function changePassword(ChangePasswordDto $dto, ChangePasswordAction $action): JsonResponse
+    {
+        return $this->sendResponse($action($dto), 'Successfully password updated.');
+    }
+
     public function me(): JsonResponse
     {
-        $success = auth()->user();
-
-        return $this->sendResponse($success);
+        return $this->sendResponse(UserDto::from(auth()->user()));
     }
 
     public function logout(): JsonResponse
