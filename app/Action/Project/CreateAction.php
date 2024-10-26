@@ -18,22 +18,28 @@ final class CreateAction
 
     private function uploadMediaObject(array $data): array
     {
+        $files = [];
         foreach ($data['files'] as $key => $file) {
-            $data['files'][$key]['file'] = MediaObject::upload($file, 'files');
-            $data['files'][$key]['alt'] = !empty($data['file_alt'][$key]) ? $data['file_alt'][$key] : "";
+            $files[$key]['file'] = MediaObject::upload($file, 'files');
+            $files[$key]['alt'] = !empty($data['file_alt'][$key]) ? $data['file_alt'][$key] : "";
         }
+        $data['files'] = $files;
         ksort($data['files']);
 
+        $pictures = [];
         foreach ($data['pictures'] as $key => $picture) {
-            $data['pictures'][$key]['picture'] = MediaObject::upload($picture);
-            $data['pictures'][$key]['alt'] = !empty($data['picture_alt'][$key]) ? $data['picture_alt'][$key] : null;
+            $pictures[$key]['picture'] = MediaObject::upload($picture);
+            $pictures[$key]['alt'] = !empty($data['picture_alt'][$key]) ? $data['picture_alt'][$key] : null;
         }
+        $data['pictures'] = $pictures;
         ksort($data['pictures']);
 
+        $plan_photos = [];
         foreach ($data['plan_photos'] as $key => $plan_photo) {
-            $data['plan_photos'][$key]['plan_photo'] = MediaObject::upload($plan_photo);
-            $data['plan_photos'][$key]['alt'] = !empty($data['plan_photo_alt'][$key]) ? $data['plan_photo_alt'][$key] : null;
+            $plan_photos[$key]['plan_photo'] = MediaObject::upload($plan_photo);
+            $plan_photos[$key]['alt'] = !empty($data['plan_photo_alt'][$key]) ? $data['plan_photo_alt'][$key] : null;
         }
+        $data['plan_photos'] = $plan_photos;
         ksort($data['plan_photos']);
 
         if (!empty($data['image'])) {

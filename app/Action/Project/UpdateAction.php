@@ -27,7 +27,7 @@ final class UpdateAction
         $deleted_files = [];
         $files = $project->files;
         foreach ($data['files'] ?? [] as $key => $file) {
-            if (Storage::disk('public')->exists($files[$key]['file'])) $deleted_files[] = $files[$key]['file'];
+            if (!empty($files[$key]['file']) && Storage::disk('public')->exists($files[$key]['file'])) $deleted_files[] = $files[$key]['file'];
 
             $files[$key]['file'] = MediaObject::upload($file, 'files');
         }
@@ -41,7 +41,7 @@ final class UpdateAction
 
         $pictures = $project->pictures;
         foreach ($data['pictures'] ?? [] as $key => $picture) {
-            if (Storage::disk('public')->exists($pictures[$key]['picture'])) $deleted_files[] = $pictures[$key]['picture'];
+            if (!empty($pictures[$key]['picture']) && Storage::disk('public')->exists($pictures[$key]['picture'])) $deleted_files[] = $pictures[$key]['picture'];
 
             $pictures[$key]['picture'] = MediaObject::upload($picture);
         }
@@ -55,7 +55,7 @@ final class UpdateAction
 
         $plan_photos = $project->plan_photos;
         foreach ($data['plan_photos'] ?? [] as $key => $plan_photo) {
-            if (Storage::disk('public')->exists($plan_photos[$key]['plan_photo'])) $deleted_files[] = $plan_photos[$key]['plan_photo'];
+            if (!empty($plan_photos[$key]['plan_photo']) && Storage::disk('public')->exists($plan_photos[$key]['plan_photo'])) $deleted_files[] = $plan_photos[$key]['plan_photo'];
 
             $plan_photos[$key]['plan_photo'] = MediaObject::upload($plan_photo);
         }

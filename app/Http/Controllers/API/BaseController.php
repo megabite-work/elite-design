@@ -11,11 +11,16 @@ class BaseController extends Controller
     {
         $response = [
             'success' => true,
-            'data'    => $result,
+            'data' => $result,
             'message' => $message,
         ];
 
         return response()->json($response, 200);
+    }
+
+    public function sendIndexResponse($result): JsonResponse
+    {
+        return response()->json($result, 200);
     }
 
     public function sendError($error, $errorMessages = [], $code = 404): JsonResponse

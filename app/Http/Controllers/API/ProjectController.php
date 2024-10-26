@@ -25,7 +25,7 @@ class ProjectController extends BaseController implements HasMiddleware
     }
     public function index(QueryDto $dto, IndexAction $action): JsonResponse
     {
-        return $this->sendResponse($action($dto));
+        return $this->sendIndexResponse($action($dto));
     }
 
     public function store(CreateDto $dto, CreateAction $action): JsonResponse
