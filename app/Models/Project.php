@@ -12,6 +12,19 @@ class Project extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'files' => 'array',
+        'pictures' => 'array',
+        'plan_photos' => 'array',
+        'alt' => 'array',
+        'title' => 'array',
+        'description' => 'array',
+        'city' => 'array',
+        'short_description' => 'array',
+        'characteristics' => 'array',
+        'plans' => 'array',
+    ];
+
     protected $hidden = [
         'updated_at',
     ];
@@ -19,7 +32,6 @@ class Project extends Model
     public function files(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -27,7 +39,6 @@ class Project extends Model
     public function pictures(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -35,7 +46,6 @@ class Project extends Model
     public function planPhotos(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -43,7 +53,6 @@ class Project extends Model
     public function alt(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -51,7 +60,6 @@ class Project extends Model
     public function title(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -59,7 +67,6 @@ class Project extends Model
     public function description(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -67,7 +74,6 @@ class Project extends Model
     public function city(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -75,7 +81,6 @@ class Project extends Model
     public function shortDescription(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -83,7 +88,6 @@ class Project extends Model
     public function characteristics(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -91,7 +95,6 @@ class Project extends Model
     public function plans(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
