@@ -5,7 +5,7 @@ namespace App\Dto\ContactMe;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Data;
 
-class SendMailDto extends Data
+class ContantMeDto extends Data
 {
     public function __construct(
         #[Max(255)]

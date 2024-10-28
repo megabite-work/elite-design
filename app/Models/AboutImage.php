@@ -12,6 +12,12 @@ class AboutImage extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'alt' => 'array',
+        'title' => 'array',
+        'description' => 'array',
+    ];
+
     protected $hidden = [
         'updated_at',
     ];
@@ -19,7 +25,6 @@ class AboutImage extends Model
     public function alt(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -27,7 +32,6 @@ class AboutImage extends Model
     public function title(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }
@@ -35,7 +39,6 @@ class AboutImage extends Model
     public function description(): Attribute
     {
         return Attribute::make(
-            get: fn($data) => json_decode($data),
             set: fn($data) => json_encode($data, JSON_UNESCAPED_UNICODE),
         );
     }

@@ -12,6 +12,11 @@ class WebSetting extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'about' => 'array',
+        'images' => 'array',
+    ];
+
     protected $hidden = [
         'updated_at',
     ];

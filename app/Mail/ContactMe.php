@@ -23,8 +23,8 @@ class ContactMe extends Mailable implements ShouldQueue
     {
         return new Envelope(
             subject: 'С сайта поступила новая заявка',
-            // to: [new Address('contact@elite-dd.com')]
-            to: [new Address('g.work.01.01.2000@gmail.com')]
+            to: [new Address('contact@elite-dd.com')]
+            // to: [new Address('g.work.01.01.2000@gmail.com')]
         );
     }
 
