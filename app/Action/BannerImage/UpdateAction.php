@@ -30,12 +30,13 @@ final class UpdateAction
 
             $images[$key]['image'] = MediaObject::upload($image);
         }
-        $data['images'] = $images;
-
+        
         foreach ($data['formats'] ?? [] as $key => $value) {
-            $data['images'][$key]['fromat'] = !empty($value) ? $value : $images[$key]['format'] ?? "";
+            $images[$key]['format'] = !empty($value) ? $value : $images[$key]['format'] ?? "";
         }
         ksort($data['images']);
+        $data['images'] = array_values($images);
+        unset($data['formats']);
 
         return [$data, $deleted_files];
     }

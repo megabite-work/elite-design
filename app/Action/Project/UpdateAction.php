@@ -31,13 +31,13 @@ final class UpdateAction
 
             $files[$key]['file'] = MediaObject::upload($file, 'files');
         }
-        $data['files'] = $files;
-
+        
         foreach ($data['file_alt'] ?? [] as $key => $value) {
-            $data['files'][$key]['alt']['en'] = !empty($value['en']) ? $value['en'] : $files[$key]['alt']['en'] ?? "";
-            $data['files'][$key]['alt']['ru'] = !empty($value['ru']) ? $value['ru'] : $files[$key]['alt']['ru'] ?? "";
+            $files[$key]['alt']['en'] = !empty($value['en']) ? $value['en'] : $files[$key]['alt']['en'] ?? "";
+            $files[$key]['alt']['ru'] = !empty($value['ru']) ? $value['ru'] : $files[$key]['alt']['ru'] ?? "";
         }
         ksort($data['files']);
+        $data['files'] = array_values($files);
 
         $pictures = array_values($project->pictures);
         foreach ($data['pictures'] ?? [] as $key => $picture) {
@@ -45,13 +45,13 @@ final class UpdateAction
 
             $pictures[$key]['picture'] = MediaObject::upload($picture);
         }
-        $data['pictures'] = $pictures;
-
+        
         foreach ($data['picture_alt'] ?? [] as $key => $value) {
-            $data['pictures'][$key]['alt']['en'] = !empty($value['en']) ? $value['en'] : $pictures[$key]['alt']['en'] ?? "";
-            $data['pictures'][$key]['alt']['ru'] = !empty($value['ru']) ? $value['ru'] : $pictures[$key]['alt']['ru'] ?? "";
+            $pictures[$key]['alt']['en'] = !empty($value['en']) ? $value['en'] : $pictures[$key]['alt']['en'] ?? "";
+            $pictures[$key]['alt']['ru'] = !empty($value['ru']) ? $value['ru'] : $pictures[$key]['alt']['ru'] ?? "";
         }
         ksort($data['pictures']);
+        $data['pictures'] = array_values($pictures);
 
         $plan_photos = array_values($project->plan_photos);
         foreach ($data['plan_photos'] ?? [] as $key => $plan_photo) {
@@ -59,13 +59,13 @@ final class UpdateAction
 
             $plan_photos[$key]['plan_photo'] = MediaObject::upload($plan_photo);
         }
-        $data['plan_photos'] = $plan_photos;
-
+        
         foreach ($data['picture_alt'] ?? [] as $key => $value) {
-            $data['plan_photos'][$key]['alt']['en'] = !empty($value['en']) ? $value['en'] : $plan_photos[$key]['alt']['en'] ?? "";
-            $data['plan_photos'][$key]['alt']['ru'] = !empty($value['ru']) ? $value['ru'] : $plan_photos[$key]['alt']['ru'] ?? "";
+            $plan_photos[$key]['alt']['en'] = !empty($value['en']) ? $value['en'] : $plan_photos[$key]['alt']['en'] ?? "";
+            $plan_photos[$key]['alt']['ru'] = !empty($value['ru']) ? $value['ru'] : $plan_photos[$key]['alt']['ru'] ?? "";
         }
         ksort($data['plan_photos']);
+        $data['plan_photos'] = array_values($plan_photos);
 
         if (!empty($data['image'])) {
             $data['image'] = MediaObject::upload($data['image']);

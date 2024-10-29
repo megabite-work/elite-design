@@ -30,13 +30,13 @@ final class UpdateAction
 
             $images[$key]['image'] = MediaObject::upload($image);
         }
-        $data['images'] = $images;
-
+        
         foreach ($data['alt'] ?? [] as $key => $value) {
-            $data['images'][$key]['alt']['en'] = !empty($value['en']) ? $value['en'] : $image->alt['en'] ?? "";
-            $data['images'][$key]['alt']['ru'] = !empty($value['ru']) ? $value['ru'] : $image->alt['ru'] ?? "";
+            $images[$key]['alt']['en'] = !empty($value['en']) ? $value['en'] : $image->alt['en'] ?? "";
+            $images[$key]['alt']['ru'] = !empty($value['ru']) ? $value['ru'] : $image->alt['ru'] ?? "";
         }
         ksort($data['images']);
+        $data['images'] = array_values($images);
         unset($data['alt']);
 
 
