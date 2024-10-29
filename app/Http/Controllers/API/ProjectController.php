@@ -4,10 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Action\Project\CreateAction;
 use App\Action\Project\DeleteAction;
+use App\Action\Project\DeleteMediaAction;
 use App\Action\Project\IndexAction;
 use App\Action\Project\ShowAction;
 use App\Action\Project\UpdateAction;
 use App\Dto\Project\CreateDto;
+use App\Dto\Project\DeleteMediaDto;
 use App\Dto\Project\QueryDto;
 use App\Dto\Project\UpdateDto;
 use App\Http\Controllers\API\BaseController;
@@ -46,5 +48,10 @@ class ProjectController extends BaseController implements HasMiddleware
     public function destroy(int $id, DeleteAction $action): JsonResponse
     {
         return $this->sendResponse($action($id), "Project successfully deleted");
+    }
+
+    public function deleteMedia(DeleteMediaDto $dto, DeleteMediaAction $action): JsonResponse
+    {
+        return $this->sendResponse($action($dto), "Media successfully deleted");
     }
 }

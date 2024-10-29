@@ -23,6 +23,7 @@ Route::group([], function () {
     Route::post('/banner-images/sort', [BannerImageController::class, 'sort']);
     Route::post('/about-images/sort', [AboutImageController::class, 'sort']);
     Route::post('/contact-me', [ContactMeController::class, 'contactMe']);
+    Route::delete('/projects/{project}/delete-media', [ProjectController::class, 'deleteMedia']);
 });
 
 Route::apiResources([

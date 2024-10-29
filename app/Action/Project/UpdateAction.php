@@ -25,7 +25,7 @@ final class UpdateAction
     private function updateMediaObject(array $data, Project $project): array
     {
         $deleted_files = [];
-        $files = $project->files;
+        $files = array_values($project->files);
         foreach ($data['files'] ?? [] as $key => $file) {
             if (!empty($files[$key]['file']) && Storage::disk('public')->exists($files[$key]['file'])) $deleted_files[] = $files[$key]['file'];
 
@@ -39,7 +39,7 @@ final class UpdateAction
         }
         ksort($data['files']);
 
-        $pictures = $project->pictures;
+        $pictures = array_values($project->pictures);
         foreach ($data['pictures'] ?? [] as $key => $picture) {
             if (!empty($pictures[$key]['picture']) && Storage::disk('public')->exists($pictures[$key]['picture'])) $deleted_files[] = $pictures[$key]['picture'];
 
@@ -53,7 +53,7 @@ final class UpdateAction
         }
         ksort($data['pictures']);
 
-        $plan_photos = $project->plan_photos;
+        $plan_photos = array_values($project->plan_photos);
         foreach ($data['plan_photos'] ?? [] as $key => $plan_photo) {
             if (!empty($plan_photos[$key]['plan_photo']) && Storage::disk('public')->exists($plan_photos[$key]['plan_photo'])) $deleted_files[] = $plan_photos[$key]['plan_photo'];
 

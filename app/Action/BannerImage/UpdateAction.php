@@ -24,7 +24,7 @@ final class UpdateAction
     private function updateMediaObject(array $data, BannerImage $bannerImage): array
     {
         $deleted_files = [];
-        $images = $bannerImage->images;
+        $images = array_values($bannerImage->images);
         foreach ($data['images'] ?? [] as $key => $image) {
             if (!empty($images[$key]['image']) && Storage::disk('public')->exists($images[$key]['image'])) $deleted_files[] = $images[$key]['image'];
 
