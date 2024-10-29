@@ -24,7 +24,7 @@ final class UpdateAction
     private function updateMediaObject(array $data, AboutImage $aboutImage): array
     {
         $deleted_files = [];
-        if ($data['image']) {
+        if (!empty($data['image'])) {
             $data['image'] = MediaObject::upload($data['image']);
             $deleted_files[] = $aboutImage->image;
         }

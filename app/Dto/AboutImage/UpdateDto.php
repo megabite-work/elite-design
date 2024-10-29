@@ -15,11 +15,11 @@ class UpdateDto extends Data
         #[FromRouteParameter('about_image')]
         #[Exists('about_images', 'id')]
         public int $id,
-        public array $title = [],
-        public array $alt = [],
+        public ?array $title,
+        public ?array $alt,
         #[Image]
         public ?UploadedFile $image,
-        public array $description = [],
+        public ?array $description,
     ) {}
 
     public static function rules(ValidationContext $context): array
