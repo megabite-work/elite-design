@@ -77,3 +77,12 @@ prod:
 	@$(DC) up -d --build --remove-orphans
 	@$(PHP) $(CIP)
 	@$(PHP) $(CC)
+
+up:
+	@cp docker/.env.example docker/.env
+	@$(DC) up -d --build --remove-orphans
+	@$(PHP) $(CI)
+	@cp project/.env.docker project/.env
+	@$(PHP) php artisan key:generate --ansi
+	@$(PHP) php artisan jwt:secret
+	@$(PHP) $(DMM)
